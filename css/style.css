@@ -1025,26 +1025,34 @@ section { position: relative; }
   display: flex;
   align-items: center;
   overflow: hidden;
+  background: #0a0a0a;
 }
 .hero-bg {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 0;
 }
 .hero-bg img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 20%;
   filter: grayscale(0.7) brightness(0.4) contrast(1.1);
 }
 .hero-overlay {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: linear-gradient(
     135deg,
-    rgba(10, 10, 10, 0.95) 0%,
-    rgba(10, 10, 10, 0.7) 50%,
-    rgba(10, 10, 10, 0.4) 100%
+    rgba(10, 10, 10, 0.92) 0%,
+    rgba(10, 10, 10, 0.65) 50%,
+    rgba(10, 10, 10, 0.3) 100%
   );
 }
 .wm-hero-v2 {
@@ -1057,6 +1065,7 @@ section { position: relative; }
   z-index: 1;
   padding: 140px 0 80px;
   max-width: 650px;
+  width: 100%;
 }
 .hero-v2-badge {
   display: inline-flex;
