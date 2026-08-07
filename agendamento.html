@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agendamento | Los Cholos Tattoo</title>
+  <meta name="description" content="Solicite seu orçamento no Los Cholos Tattoo. Preencha o formulário e receba o atendimento pelo WhatsApp. Estúdio privado em Belo Horizonte - MG." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f59e0b' stroke='%23000000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.518l4.276 3.664a1 1 0 0 0 1.516-.294z'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="contact">
+
+  <!-- ================= PAGE HERO ================= -->
+  <section class="page-hero">
+    <span class="watermark wm-page">CHOLOS</span>
+    <span class="grid-bg"></span>
+    <span class="blob" style="width:420px;height:420px;top:-140px;right:-120px"></span>
+    <div class="container" style="position:relative;z-index:1">
+      <div class="badge reveal"><span class="dot"></span> Direct_Contact_System // BH</div>
+      <h1 class="h-page reveal" style="--rd:.1s;margin-top:1.75rem">Deixe sua<br /><span class="grad">Marca.</span></h1>
+      <p class="lead reveal" style="--rd:.2s;margin-top:1.5rem">
+        Preencha o formulário abaixo e receba sua <strong>proposta personalizada</strong> direto no WhatsApp. Atendimento estritamente sob agendamento no estúdio privado.
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= CONTATOS ================= -->
+  <section class="section" style="padding-top:1rem">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="frame overlay-slide contact-card reveal">
+          <span class="label">Estúdio Privado</span>
+          <h3>Los Cholos Tattoo</h3>
+          <p>R. Póvoa de Varzim, 240<br />Paquetá — Pampulha<br />Belo Horizonte - MG, CEP 31340-060</p>
+          <a data-wa="" target="_blank" rel="noopener">+55 31 9812-7551</a>
+        </div>
+        <div class="frame overlay-slide contact-card reveal" style="--rd:.1s">
+          <span class="label">Instagram</span>
+          <h3>O Artista</h3>
+          <p>Gustavo Silva — Blackwork &amp; Dark Ornamental. Portfólio, bastidores e projetos autorais.</p>
+          <a href="https://www.instagram.com/russ__ink/" target="_blank" rel="noopener">@russ__ink</a>
+        </div>
+        <div class="frame overlay-slide contact-card reveal" style="--rd:.2s">
+          <span class="label">E-mail</span>
+          <h3>Contato Direto</h3>
+          <p>Para referências, dúvidas e orçamentos por escrito. Respondemos em até 24h.</p>
+          <a href="mailto:gustavoalbertons@gmail.com">gustavoalbertons@gmail.com</a>
+        </div>
+      </div>
+
+      <!-- ================= FORMULÁRIO ================= -->
+      <div class="frame form-card reveal">
+        <div class="section-head" style="margin-bottom:2rem">
+          <span class="eyebrow">Quote_Request // Form</span>
+          <h2 class="h-section" style="margin-top:1.2rem;font-size:clamp(1.8rem,4vw,2.8rem)">Solicite seu<br /><span class="grad">Orçamento</span></h2>
+        </div>
+
+        <form id="quote-form" class="form-grid" novalidate>
+          <div class="field">
+            <label for="q-name">Nome Completo</label>
+            <input id="q-name" name="name" type="text" placeholder="COMO DEVEMOS CHAMÁ-LO?" required autocomplete="name" />
+          </div>
+
+          <div class="field">
+            <label for="q-whats">Seu WhatsApp</label>
+            <input id="q-whats" name="whats" type="tel" placeholder="(31) 9 9999-9999" autocomplete="tel" />
+          </div>
+
+          <div class="field">
+            <label for="q-style">Estilo Desejado</label>
+            <select id="q-style" name="style" required>
+              <option value="" selected disabled>SELECIONE</option>
+              <option>Blackwork</option>
+              <option>Dark Ornamental</option>
+              <option>Chicano / Cultura Latina</option>
+              <option>Projeto Autoral (Custom)</option>
+              <option>Fechamento (Projeto Completo)</option>
+              <option>Outro</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="q-placement">Local do Corpo</label>
+            <input id="q-placement" name="placement" type="text" placeholder="EX: ANTEBRAÇO..." />
+          </div>
+
+          <div class="field">
+            <label for="q-size">Tamanho Aproximado</label>
+            <select id="q-size" name="size">
+              <option value="" selected disabled>SELECIONE A ESCALA</option>
+              <option>Pequeno (até 10cm)</option>
+              <option>Médio (10-20cm)</option>
+              <option>Grande (acima de 20cm)</option>
+              <option>Fechamento — Projeto Completo</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="q-date">Data Desejada</label>
+            <input id="q-date" name="date" type="date" />
+          </div>
+
+          <div class="field full">
+            <label for="q-idea">Manifesto da Ideia</label>
+            <textarea id="q-idea" name="idea" placeholder="DESCREVA OS ELEMENTOS, REFERÊNCIAS E O QUE ESSA ARTE SIGNIFICA PARA VOCÊ..."></textarea>
+          </div>
+
+          <div class="field full">
+            <button type="submit" class="btn form-submit">Solicitar Orçamento</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/contact.js"></script>
+</body>
+</html>
