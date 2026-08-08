@@ -1,22 +1,22 @@
 /* =========================================================
    PARTICLES — Los Cholos Tattoo
-   Partículas copper/dourado que se afastam do mouse
+   Partículas copper/dourado com movimento orgânico
    ========================================================= */
 
 (function() {
-  var canvas, ctx, particles, mouseX, mouseY, isMobile;
+  var canvas, ctx, particles, mouse, isMobile;
   
   var config = {
-    particleCount: 60,
-    particleMinSize: 1,
-    particleMaxSize: 2.5,
-    particleColor: { r: 200, g: 117, b: 51 },
-    particleColorAlt: { r: 232, g: 168, b: 124 },
-    mouseRadius: 80,
-    mouseForce: 0.08,
-    returnForce: 0.03,
-    lineDistance: 70,
-    lineOpacity: 0.05
+    count: 60,
+    minSize: 0.8,
+    maxSize: 2.2,
+    speed: 0.3,
+    color: { r: 200, g: 117, b: 51 },
+    colorAlt: { r: 232, g: 168, b: 124 },
+    mouseRadius: 120,
+    mouseForce: 0.8,
+    lineDistance: 100,
+    lineOpacity: 0.08
   };
   
   function init() {
@@ -24,9 +24,7 @@
     if (!canvas) return;
     
     ctx = canvas.getContext("2d");
-    particles = [];
-    mouseX = -1000;
-    mouseY = -1000;
+    mouse = { x: -9999, y: -9999 };
     isMobile = window.innerWidth < 768;
     
     var w = document.documentElement.clientWidth || window.innerWidth;
@@ -43,98 +41,112 @@
   
   function createParticles() {
     particles = [];
-    var count = isMobile ? 25 : config.particleCount;
+    var count = isMobile ? 30 : config.count;
     var w = canvas.width;
     var h = canvas.height;
+    
     for (var i = 0; i < count; i++) {
-      var x = Math.random() * w;
-      var y = Math.random() * h;
+      var angle = Math.random() * Math.PI * 2;
+      var speed = 0.1 + Math.random() * config.speed;
       particles.push({
-        x: x,
-        y: y,
-        homeX: x,
-        homeY: y,
-        vx: 0,
-        vy: 0,
-        size: config.particleMinSize + Math.random() * (config.particleMaxSize - config.particleMinSize),
-        opacity: 0.15 + Math.random() * 0.35,
-        color: Math.random() > 0.5 ? config.particleColor : config.particleColorAlt
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        size: config.minSize + Math.random() * (config.maxSize - config.minSize),
+        opacity: 0.2 + Math.random() * 0.4,
+        color: Math.random() > 0.5 ? config.color : config.colorAlt,
+        angle: angle,
+        speed: speed,
+        wander: Math.random() * Math.PI * 2,
+        wanderSpeed: 0.005 + Math.random() * 0.01
       });
     }
   }
   
   function bindEvents() {
     document.addEventListener("mousemove", function(e) {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
     });
     
     document.addEventListener("mouseleave", function() {
-      mouseX = -1000;
-      mouseY = -1000;
+      mouse.x = -9999;
+      mouse.y = -9999;
     });
     
     document.addEventListener("touchstart", function(e) {
-      mouseX = e.touches[0].clientX;
-      mouseY = e.touches[0].clientY;
+      mouse.x = e.touches[0].clientX;
+      mouse.y = e.touches[0].clientY;
     }, { passive: true });
     
     document.addEventListener("touchmove", function(e) {
-      mouseX = e.touches[0].clientX;
-      mouseY = e.touches[0].clientY;
+      mouse.x = e.touches[0].clientX;
+      mouse.y = e.touches[0].clientY;
     }, { passive: true });
     
     document.addEventListener("touchend", function() {
-      mouseX = -1000;
-      mouseY = -1000;
+      mouse.x = -9999;
+      mouse.y = -9999;
     });
   }
   
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    updateParticles();
+    update();
     drawLines();
-    drawParticles();
-    
+    drawDots();
     requestAnimationFrame(animate);
   }
   
-  function updateParticles() {
+  function update() {
+    var w = canvas.width;
+    var h = canvas.height;
+    
     for (var i = 0; i < particles.length; i++) {
       var p = particles[i];
       
-      // Mouse/touch repulsion
-      var dx = p.x - mouseX;
-      var dy = p.y - mouseY;
+      // Wander - organic direction changes
+      p.wander += p.wanderSpeed;
+      p.vx += Math.cos(p.wander) * 0.02;
+      p.vy += Math.sin(p.wander) * 0.02;
+      
+      // Mouse repulsion
+      var dx = p.x - mouse.x;
+      var dy = p.y - mouse.y;
       var dist = Math.sqrt(dx * dx + dy * dy);
       
       if (dist < config.mouseRadius && dist > 0) {
         var force = (config.mouseRadius - dist) / config.mouseRadius;
-        var angle = Math.atan2(dy, dx);
-        p.vx += Math.cos(angle) * force * config.mouseForce;
-        p.vy += Math.sin(angle) * force * config.mouseForce;
+        p.vx += (dx / dist) * force * config.mouseForce;
+        p.vy += (dy / dist) * force * config.mouseForce;
       }
       
-      // Gentle drift
-      p.vx += (Math.random() - 0.5) * 0.06;
-      p.vy += (Math.random() - 0.5) * 0.06;
-      
-      // Return to home position
-      p.vx += (p.homeX - p.x) * config.returnForce;
-      p.vy += (p.homeY - p.y) * config.returnForce;
+      // Speed limit
+      var currentSpeed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+      var maxSpeed = p.speed * 2;
+      if (currentSpeed > maxSpeed) {
+        p.vx = (p.vx / currentSpeed) * maxSpeed;
+        p.vy = (p.vy / currentSpeed) * maxSpeed;
+      }
       
       // Friction
-      p.vx *= 0.95;
-      p.vy *= 0.95;
+      p.vx *= 0.99;
+      p.vy *= 0.99;
       
-      // Apply velocity
+      // Apply
       p.x += p.vx;
       p.y += p.vy;
+      
+      // Wrap with padding
+      if (p.x < -20) p.x = w + 20;
+      if (p.x > w + 20) p.x = -20;
+      if (p.y < -20) p.y = h + 20;
+      if (p.y > h + 20) p.y = -20;
     }
   }
   
-  function drawParticles() {
+  function drawDots() {
     for (var i = 0; i < particles.length; i++) {
       var p = particles[i];
       ctx.beginPath();
@@ -155,7 +167,7 @@
         
         if (dist < config.lineDistance) {
           var opacity = (1 - dist / config.lineDistance) * config.lineOpacity;
-          ctx.strokeStyle = "rgba(" + config.particleColor.r + "," + config.particleColor.g + "," + config.particleColor.b + "," + opacity + ")";
+          ctx.strokeStyle = "rgba(" + config.color.r + "," + config.color.g + "," + config.color.b + "," + opacity + ")";
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
