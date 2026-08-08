@@ -7,14 +7,14 @@
   var canvas, ctx, particles, mouse, isMobile, w, h;
   
   var config = {
-    count: 80,
-    minSize: 0.6,
-    maxSize: 2,
-    speed: 0.12,
+    count: 120,
+    minSize: 0.5,
+    maxSize: 1.8,
+    speed: 0.08,
     color: { r: 200, g: 117, b: 51 },
     colorAlt: { r: 232, g: 168, b: 124 },
     mouseRadius: 150,
-    mouseForce: 0.6,
+    mouseForce: 0.5,
     lineDistance: 140,
     lineOpacity: 0.08
   };
@@ -41,28 +41,29 @@
   
   function createParticles() {
     particles = [];
-    var count = isMobile ? 40 : config.count;
+    var count = isMobile ? 60 : config.count;
+    var cx = w / 2;
+    var cy = h / 2;
     
     for (var i = 0; i < count; i++) {
       var angle = Math.random() * Math.PI * 2;
-      var spd = 0.5 + Math.random() * config.speed;
-      var startX = Math.random() * w;
-      var startY = Math.random() * h;
+      var spd = 3 + Math.random() * 6;
       
       particles.push({
-        x: startX,
-        y: startY,
+        x: cx + (Math.random() - 0.5) * 100,
+        y: cy + (Math.random() - 0.5) * 100,
         vx: Math.cos(angle) * spd,
         vy: Math.sin(angle) * spd,
         size: config.minSize + Math.random() * (config.maxSize - config.minSize),
-        opacity: 0.15 + Math.random() * 0.35,
+        opacity: 0,
+        targetOpacity: 0.15 + Math.random() * 0.35,
         color: Math.random() > 0.5 ? config.color : config.colorAlt,
         angle: angle,
-        speed: spd,
+        speed: 0.08 + Math.random() * config.speed,
         wanderAngle: Math.random() * Math.PI * 2,
         exploding: true,
         explodeTime: 0,
-        explodeDuration: 50 + Math.random() * 40
+        explodeDuration: 60 + Math.random() * 50
       });
     }
   }
@@ -108,11 +109,11 @@
       
       if (p.exploding) {
         p.explodeTime++;
-        p.vx *= 0.97;
-        p.vy *= 0.97;
+        p.vx *= 0.96;
+        p.vy *= 0.96;
         p.x += p.vx;
         p.y += p.vy;
-        p.opacity = Math.min(0.3, p.explodeTime / 25);
+        p.opacity = Math.min(p.targetOpacity, p.explodeTime / 30);
         
         if (p.explodeTime >= p.explodeDuration) {
           p.exploding = false;
@@ -121,15 +122,15 @@
         }
       } else {
         // Random direction changes - organic movement
-        p.wanderAngle += (Math.random() - 0.5) * 0.2;
-        p.vx += Math.cos(p.wanderAngle) * 0.025;
-        p.vy += Math.sin(p.wanderAngle) * 0.025;
+        p.wanderAngle += (Math.random() - 0.5) * 0.15;
+        p.vx += Math.cos(p.wanderAngle) * 0.02;
+        p.vy += Math.sin(p.wanderAngle) * 0.02;
         
         // Occasional random kick
-        if (Math.random() < 0.015) {
+        if (Math.random() < 0.01) {
           var kickAngle = Math.random() * Math.PI * 2;
-          p.vx += Math.cos(kickAngle) * 0.2;
-          p.vy += Math.sin(kickAngle) * 0.2;
+          p.vx += Math.cos(kickAngle) * 0.15;
+          p.vy += Math.sin(kickAngle) * 0.15;
         }
         
         // Mouse repulsion
