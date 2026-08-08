@@ -378,55 +378,64 @@ function renderCatalog() {
 
 /* ---------- MAGNETIC BUTTONS ---------- */
 (function initMagnetic() {
-  if (window.innerWidth < 1024) return;
-  
   var magnets = document.querySelectorAll(".magnetic");
   magnets.forEach(function(magnet) {
     var inner = magnet.querySelector(".magnetic-inner") || magnet;
     
-    magnet.addEventListener("mousemove", function(e) {
+    function onMove(cx, cy) {
       var rect = magnet.getBoundingClientRect();
-      var x = e.clientX - rect.left - rect.width / 2;
-      var y = e.clientY - rect.top - rect.height / 2;
+      var x = cx - rect.left - rect.width / 2;
+      var y = cy - rect.top - rect.height / 2;
       inner.style.transform = "translate(" + (x * 0.3) + "px, " + (y * 0.3) + "px)";
-    });
+    }
     
-    magnet.addEventListener("mouseleave", function() {
+    function onEnd() {
       inner.style.transform = "translate(0, 0)";
-    });
+    }
+    
+    magnet.addEventListener("mousemove", function(e) { onMove(e.clientX, e.clientY); });
+    magnet.addEventListener("mouseleave", onEnd);
+    magnet.addEventListener("touchmove", function(e) { onMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+    magnet.addEventListener("touchend", onEnd);
   });
 })();
 
 /* ---------- HOVER GLOW EFFECT ---------- */
 (function initGlow() {
   document.querySelectorAll(".hover-glow").forEach(function(el) {
-    el.addEventListener("mousemove", function(e) {
+    function onMove(cx, cy) {
       var rect = el.getBoundingClientRect();
-      var x = ((e.clientX - rect.left) / rect.width) * 100;
-      var y = ((e.clientY - rect.top) / rect.height) * 100;
+      var x = ((cx - rect.left) / rect.width) * 100;
+      var y = ((cy - rect.top) / rect.height) * 100;
       el.style.setProperty("--mouse-x", x + "%");
       el.style.setProperty("--mouse-y", y + "%");
-    });
+    }
+    
+    el.addEventListener("mousemove", function(e) { onMove(e.clientX, e.clientY); });
+    el.addEventListener("touchmove", function(e) { onMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
   });
 })();
 
 /* ---------- TILT CARDS ---------- */
 (function initTilt() {
-  if (window.innerWidth < 1024) return;
-  
   document.querySelectorAll(".tilt-card").forEach(function(card) {
     var inner = card.querySelector(".tilt-card-inner") || card;
     
-    card.addEventListener("mousemove", function(e) {
+    function onMove(cx, cy) {
       var rect = card.getBoundingClientRect();
-      var x = (e.clientX - rect.left) / rect.width - 0.5;
-      var y = (e.clientY - rect.top) / rect.height - 0.5;
+      var x = (cx - rect.left) / rect.width - 0.5;
+      var y = (cy - rect.top) / rect.height - 0.5;
       inner.style.transform = "rotateY(" + (x * 10) + "deg) rotateX(" + (-y * 10) + "deg)";
-    });
+    }
     
-    card.addEventListener("mouseleave", function() {
+    function onEnd() {
       inner.style.transform = "rotateY(0) rotateX(0)";
-    });
+    }
+    
+    card.addEventListener("mousemove", function(e) { onMove(e.clientX, e.clientY); });
+    card.addEventListener("mouseleave", onEnd);
+    card.addEventListener("touchmove", function(e) { onMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+    card.addEventListener("touchend", onEnd);
   });
 })();
 
