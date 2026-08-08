@@ -1,0 +1,317 @@
+
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Los Cholos Tattoo | Arte & Cultura Urbana</title>
+  <style>
+    :root {
+      --bg: oklch(5% 0 0); /* Preto Profundo */
+      --surface: oklch(12% 0 0); /* Cinza Antracite */
+      --fg: oklch(98% 0 0); /* Branco Gelo */
+      --muted: oklch(60% 0 0); /* Cinza Médio */
+      --border: oklch(20% 0 0); /* Borda Sutil */
+      --accent: oklch(100% 0 0); /* Branco Puro para destaque */
+      
+      --font-display: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+      --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Nav Refinada */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 1.2rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(15px);
+      background: rgba(5, 5, 5, 0.8);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -1px;
+      font-size: 1.2rem;
+    }
+
+    /* Hero Section - Mais Impacto */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+      background: radial-gradient(circle at center, oklch(15% 0 0) 0%, oklch(5% 0 0) 70%);
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 12vw, 6rem);
+      line-height: 0.9;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -3px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero p {
+      font-size: 1rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 2.5rem;
+    }
+
+    .btn-whatsapp {
+      display: inline-block;
+      padding: 1.2rem 2.5rem;
+      background: var(--accent);
+      color: var(--bg);
+      text-decoration: none;
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+      transition: var(--transition);
+      border-radius: 0;
+    }
+
+    .btn-whatsapp:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(255,255,255,0.15);
+    }
+
+    /* Galeria - Substituindo Selected Works */
+    .section {
+      padding: 6rem 1.5rem;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-title span {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title h2 {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -1px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .work-card {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .work-card img {
+      width: 100%;
+      display: block;
+      filter: grayscale(20%);
+      transition: var(--transition);
+    }
+
+    .work-card:hover img {
+      filter: grayscale(0%);
+      transform: scale(1.03);
+    }
+
+    .work-card .info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 1.5rem;
+      background: linear-gradient(transparent, var(--bg));
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .work-card:hover .info {
+      opacity: 1;
+    }
+
+    .info span {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    /* Sobre Section */
+    .about {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .about-text {
+      max-width: 700px;
+      margin: 0 auto;
+      font-size: 1.2rem;
+      color: var(--fg);
+      font-weight: 300;
+    }
+
+    .about-text strong {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Footer */
+    footer {
+      padding: 4rem 1.5rem;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .social-links a {
+      color: var(--fg);
+      text-decoration: none;
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: var(--transition);
+    }
+
+    .social-links a:hover {
+      color: var(--muted);
+    }
+
+    .copy {
+      font-size: 0.6rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .hero h1 {
+        font-size: 3.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="particles-canvas"></canvas>
+
+  <nav>
+    <div class="logo">LOS CHOLOS</div>
+    <a href="https://wa.me/seu-numero" class="btn-whatsapp" style="padding: 0.5rem 1rem; font-size: 0.6rem;">Agendar</a>
+  </nav>
+
+  <section class="hero">
+    <p>Arte & Cultura Urbana</p>
+    <h1>Sua pele,<br>seu legado.</h1>
+    <a href="https://wa.me/seu-numero" class="btn-whatsapp">Iniciar Projeto</a>
+  </section>
+
+  <section id="galeria" class="section">
+    <div class="section-title">
+      <span>Curadoria</span>
+      <h2>O Trabalho</h2>
+    </div>
+    
+    <div class="grid">
+      <!-- Mantendo a estrutura de imagens do seu site -->
+      <div class="work-card">
+        <img src="https://midnigthnevoa.github.io/Los-Cholos-Tattoo/img/1.jpg" alt="Tattoo 1">
+        <div class="info"><span>Arte Black & Grey</span></div>
+      </div>
+      <div class="work-card">
+        <img src="https://midnigthnevoa.github.io/Los-Cholos-Tattoo/img/2.jpg" alt="Tattoo 2">
+        <div class="info"><span>Estética Urbana</span></div>
+      </div>
+      <div class="work-card">
+        <img src="https://midnigthnevoa.github.io/Los-Cholos-Tattoo/img/3.jpg" alt="Tattoo 3">
+        <div class="info"><span>Custom Piece</span></div>
+      </div>
+      <div class="work-card">
+        <img src="https://midnigthnevoa.github.io/Los-Cholos-Tattoo/img/4.jpg" alt="Tattoo 4">
+        <div class="info"><span>Traço Fino</span></div>
+      </div>
+      <div class="work-card">
+        <img src="https://midnigthnevoa.github.io/Los-Cholos-Tattoo/img/5.jpg" alt="Tattoo 5">
+        <div class="info"><span>Realismo Urbano</span></div>
+      </div>
+      <div class="work-card">
+        <img src="https://midnigthnevoa.github.io/Los-Cholos-Tattoo/img/6.jpg" alt="Tattoo 6">
+        <div class="info"><span>Sessão Blackwork</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sobre" class="section about">
+    <div class="section-title">
+      <span>Identidade</span>
+      <h2>Manifesto</h2>
+    </div>
+    <div class="about-text">
+      Não fazemos apenas tatuagens. Traduzimos a <strong>cultura das ruas</strong> e o estilo de vida urbano em arte permanente. <br><br>
+      Foco em precisão, contraste e a exclusividade de quem sabe que o <strong>luxo</strong> está nos detalhes e na atitude.
+    </div>
+  </section>
+
+  <footer>
+    <div class="social-links">
+      <a href="#">Instagram</a>
+      <a href="#">TikTok</a>
+      <a href="#">WhatsApp</a>
+    </div>
+    <p class="copy">&copy; 2024 LOS CHOLOS TATTOO. Urban Luxury Ink.</p>
+  </footer>
+
+  <script src="js/particles.js"></script>
+</body>
+</html>
