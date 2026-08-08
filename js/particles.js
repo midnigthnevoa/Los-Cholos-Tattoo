@@ -10,7 +10,7 @@
     count: 60,
     minSize: 0.8,
     maxSize: 2.2,
-    speed: 0.3,
+    speed: 0.5,
     color: { r: 200, g: 117, b: 51 },
     colorAlt: { r: 232, g: 168, b: 124 },
     mouseRadius: 120,
@@ -47,7 +47,7 @@
     
     for (var i = 0; i < count; i++) {
       var angle = Math.random() * Math.PI * 2;
-      var speed = 0.1 + Math.random() * config.speed;
+      var speed = 0.3 + Math.random() * config.speed;
       particles.push({
         x: Math.random() * w,
         y: Math.random() * h,
@@ -59,7 +59,7 @@
         angle: angle,
         speed: speed,
         wander: Math.random() * Math.PI * 2,
-        wanderSpeed: 0.005 + Math.random() * 0.01
+        wanderSpeed: 0.02 + Math.random() * 0.03
       });
     }
   }
@@ -108,8 +108,8 @@
       
       // Wander - organic direction changes
       p.wander += p.wanderSpeed;
-      p.vx += Math.cos(p.wander) * 0.02;
-      p.vy += Math.sin(p.wander) * 0.02;
+      p.vx += Math.cos(p.wander) * 0.05;
+      p.vy += Math.sin(p.wander) * 0.05;
       
       // Mouse repulsion
       var dx = p.x - mouse.x;
@@ -124,15 +124,15 @@
       
       // Speed limit
       var currentSpeed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-      var maxSpeed = p.speed * 2;
+      var maxSpeed = p.speed * 3;
       if (currentSpeed > maxSpeed) {
         p.vx = (p.vx / currentSpeed) * maxSpeed;
         p.vy = (p.vy / currentSpeed) * maxSpeed;
       }
       
       // Friction
-      p.vx *= 0.99;
-      p.vy *= 0.99;
+      p.vx *= 0.998;
+      p.vy *= 0.998;
       
       // Apply
       p.x += p.vx;
