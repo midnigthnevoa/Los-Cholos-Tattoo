@@ -1408,7 +1408,7 @@ section { position: relative; }
   text-align: center;
   transition: background 0.4s;
 }
-.process-step:hover {
+.process-step:hover, .process-step.is-touch-hover {
   background: var(--bg-3);
 }
 .process-step-num {
@@ -1571,7 +1571,7 @@ section { position: relative; }
 .hover-lift {
   transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s;
 }
-.hover-lift:hover {
+.hover-lift:hover, .hover-lift.is-touch-hover {
   transform: translateY(-4px);
   box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.4);
 }

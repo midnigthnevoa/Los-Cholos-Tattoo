@@ -400,6 +400,21 @@ function renderCatalog() {
   });
 })();
 
+/* ---------- HOVER LIFT ON TOUCH ---------- */
+(function initHoverLift() {
+  document.querySelectorAll(".hover-lift").forEach(function(el) {
+    el.addEventListener("touchstart", function() {
+      el.classList.add("is-touch-hover");
+    }, { passive: true });
+    el.addEventListener("touchend", function() {
+      el.classList.remove("is-touch-hover");
+    });
+    el.addEventListener("touchcancel", function() {
+      el.classList.remove("is-touch-hover");
+    });
+  });
+})();
+
 /* ---------- HOVER GLOW EFFECT ---------- */
 (function initGlow() {
   document.querySelectorAll(".hover-glow").forEach(function(el) {
