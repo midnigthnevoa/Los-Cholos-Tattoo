@@ -44,22 +44,28 @@
     var count = isMobile ? 30 : config.count;
     var w = canvas.width;
     var h = canvas.height;
+    var cx = w / 2;
+    var cy = h / 2;
     
     for (var i = 0; i < count; i++) {
       var angle = Math.random() * Math.PI * 2;
-      var speed = 0.3 + Math.random() * config.speed;
+      var expSpeed = 4 + Math.random() * 10;
       particles.push({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed,
+        x: cx,
+        y: cy,
+        vx: Math.cos(angle) * expSpeed,
+        vy: Math.sin(angle) * expSpeed,
         size: config.minSize + Math.random() * (config.maxSize - config.minSize),
-        opacity: 0.2 + Math.random() * 0.4,
+        opacity: 0,
+        targetOpacity: 0.2 + Math.random() * 0.4,
         color: Math.random() > 0.5 ? config.color : config.colorAlt,
         angle: angle,
-        speed: speed,
+        speed: 0.3 + Math.random() * config.speed,
         wander: Math.random() * Math.PI * 2,
-        wanderSpeed: 0.02 + Math.random() * 0.03
+        wanderSpeed: 0.02 + Math.random() * 0.03,
+        exploding: true,
+        explodeTime: 0,
+        explodeDuration: 40 + Math.random() * 30
       });
     }
   }
@@ -106,39 +112,59 @@
     for (var i = 0; i < particles.length; i++) {
       var p = particles[i];
       
-      // Wander - organic direction changes
-      p.wander += p.wanderSpeed;
-      p.vx += Math.cos(p.wander) * 0.05;
-      p.vy += Math.sin(p.wander) * 0.05;
-      
-      // Mouse repulsion
-      var dx = p.x - mouse.x;
-      var dy = p.y - mouse.y;
-      var dist = Math.sqrt(dx * dx + dy * dy);
-      
-      if (dist < config.mouseRadius && dist > 0) {
-        var force = (config.mouseRadius - dist) / config.mouseRadius;
-        p.vx += (dx / dist) * force * config.mouseForce;
-        p.vy += (dy / dist) * force * config.mouseForce;
+      if (p.exploding) {
+        // Explosion phase
+        p.explodeTime++;
+        p.vx *= 0.96;
+        p.vy *= 0.96;
+        p.x += p.vx;
+        p.y += p.vy;
+        
+        // Fade in during explosion
+        p.opacity = Math.min(p.targetOpacity, p.explodeTime / 20);
+        
+        // End explosion
+        if (p.explodeTime >= p.explodeDuration) {
+          p.exploding = false;
+          p.vx = Math.cos(p.angle) * p.speed;
+          p.vy = Math.sin(p.angle) * p.speed;
+        }
+      } else {
+        // Normal floating phase
+        // Wander
+        p.wander += p.wanderSpeed;
+        p.vx += Math.cos(p.wander) * 0.05;
+        p.vy += Math.sin(p.wander) * 0.05;
+        
+        // Mouse repulsion
+        var dx = p.x - mouse.x;
+        var dy = p.y - mouse.y;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        
+        if (dist < config.mouseRadius && dist > 0) {
+          var force = (config.mouseRadius - dist) / config.mouseRadius;
+          p.vx += (dx / dist) * force * config.mouseForce;
+          p.vy += (dy / dist) * force * config.mouseForce;
+        }
+        
+        // Speed limit
+        var currentSpeed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+        var maxSpeed = p.speed * 3;
+        if (currentSpeed > maxSpeed) {
+          p.vx = (p.vx / currentSpeed) * maxSpeed;
+          p.vy = (p.vy / currentSpeed) * maxSpeed;
+        }
+        
+        // Friction
+        p.vx *= 0.998;
+        p.vy *= 0.998;
+        
+        // Apply
+        p.x += p.vx;
+        p.y += p.vy;
       }
       
-      // Speed limit
-      var currentSpeed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-      var maxSpeed = p.speed * 3;
-      if (currentSpeed > maxSpeed) {
-        p.vx = (p.vx / currentSpeed) * maxSpeed;
-        p.vy = (p.vy / currentSpeed) * maxSpeed;
-      }
-      
-      // Friction
-      p.vx *= 0.998;
-      p.vy *= 0.998;
-      
-      // Apply
-      p.x += p.vx;
-      p.y += p.vy;
-      
-      // Wrap with padding
+      // Wrap
       if (p.x < -20) p.x = w + 20;
       if (p.x > w + 20) p.x = -20;
       if (p.y < -20) p.y = h + 20;
