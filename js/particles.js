@@ -10,11 +10,11 @@
     particleCount: 60,
     particleMinSize: 1,
     particleMaxSize: 2.5,
-    particleSpeed: 0.15,
     particleColor: { r: 200, g: 117, b: 51 },
     particleColorAlt: { r: 232, g: 168, b: 124 },
     mouseRadius: 80,
-    mouseForce: 0.05,
+    mouseForce: 0.08,
+    returnForce: 0.03,
     lineDistance: 70,
     lineOpacity: 0.05
   };
@@ -43,11 +43,15 @@
     var w = canvas.width;
     var h = canvas.height;
     for (var i = 0; i < count; i++) {
+      var x = Math.random() * w;
+      var y = Math.random() * h;
       particles.push({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        vx: (Math.random() - 0.5) * config.particleSpeed,
-        vy: (Math.random() - 0.5) * config.particleSpeed,
+        x: x,
+        y: y,
+        homeX: x,
+        homeY: y,
+        vx: 0,
+        vy: 0,
         size: config.particleMinSize + Math.random() * (config.particleMaxSize - config.particleMinSize),
         opacity: 0.15 + Math.random() * 0.35,
         color: Math.random() > 0.5 ? config.particleColor : config.particleColorAlt
@@ -93,12 +97,10 @@
   }
   
   function updateParticles() {
-    var w = canvas.width;
-    var h = canvas.height;
-    
     for (var i = 0; i < particles.length; i++) {
       var p = particles[i];
       
+      // Mouse/touch repulsion
       var dx = p.x - mouseX;
       var dy = p.y - mouseY;
       var dist = Math.sqrt(dx * dx + dy * dy);
@@ -110,17 +112,17 @@
         p.vy += Math.sin(angle) * force * config.mouseForce;
       }
       
+      // Return to home position
+      p.vx += (p.homeX - p.x) * config.returnForce;
+      p.vy += (p.homeY - p.y) * config.returnForce;
+      
+      // Friction
+      p.vx *= 0.85;
+      p.vy *= 0.85;
+      
+      // Apply velocity
       p.x += p.vx;
       p.y += p.vy;
-      
-      p.vx *= 0.95;
-      p.vy *= 0.95;
-      
-      // Bounce off edges - no jumping
-      if (p.x < 0) { p.x = 0; p.vx *= -0.5; }
-      if (p.x > w) { p.x = w; p.vx *= -0.5; }
-      if (p.y < 0) { p.y = 0; p.vy *= -0.5; }
-      if (p.y > h) { p.y = h; p.vy *= -0.5; }
     }
   }
   
