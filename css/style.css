@@ -1660,6 +1660,9 @@ html {
   height: 100vh !important;
   pointer-events: none !important;
   z-index: 1 !important;
+  will-change: transform !important;
+  transform: translateZ(0) !important;
+  -webkit-transform: translateZ(0) !important;
 }
 
 /* ---------- SEPARATOR LINE ---------- */
