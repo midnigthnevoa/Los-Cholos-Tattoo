@@ -4,18 +4,18 @@
    ========================================================= */
 
 (function() {
-  var canvas, ctx, particles, mouse, isMobile;
+  var canvas, ctx, particles, mouse, isMobile, w, h;
   
   var config = {
     count: 50,
     minSize: 0.8,
     maxSize: 2.2,
-    speed: 0.35,
+    speed: 0.4,
     color: { r: 200, g: 117, b: 51 },
     colorAlt: { r: 232, g: 168, b: 124 },
-    mouseRadius: 120,
-    mouseForce: 0.8,
-    lineDistance: 100,
+    mouseRadius: 150,
+    mouseForce: 1.2,
+    lineDistance: 120,
     lineOpacity: 0.08
   };
   
@@ -27,8 +27,8 @@
     mouse = { x: -9999, y: -9999 };
     isMobile = window.innerWidth < 768;
     
-    var w = document.documentElement.clientWidth || window.innerWidth;
-    var h = document.documentElement.clientHeight || window.innerHeight;
+    w = document.documentElement.clientWidth || window.innerWidth;
+    h = document.documentElement.clientHeight || window.innerHeight;
     canvas.width = w;
     canvas.height = h;
     canvas.style.width = w + "px";
@@ -42,30 +42,27 @@
   function createParticles() {
     particles = [];
     var count = isMobile ? 25 : config.count;
-    var w = canvas.width;
-    var h = canvas.height;
     
     for (var i = 0; i < count; i++) {
       var angle = Math.random() * Math.PI * 2;
-      var expSpeed = 1.5 + Math.random() * 4;
-      var startX = w * 0.3 + Math.random() * w * 0.4;
-      var startY = h * 0.3 + Math.random() * h * 0.4;
+      var spd = 0.5 + Math.random() * config.speed;
+      var startX = Math.random() * w;
+      var startY = Math.random() * h;
+      
       particles.push({
         x: startX,
         y: startY,
-        vx: Math.cos(angle) * expSpeed,
-        vy: Math.sin(angle) * expSpeed,
+        vx: Math.cos(angle) * spd,
+        vy: Math.sin(angle) * spd,
         size: config.minSize + Math.random() * (config.maxSize - config.minSize),
-        opacity: 0,
-        targetOpacity: 0.15 + Math.random() * 0.35,
+        opacity: 0.15 + Math.random() * 0.35,
         color: Math.random() > 0.5 ? config.color : config.colorAlt,
         angle: angle,
-        speed: 0.2 + Math.random() * config.speed,
-        wander: Math.random() * Math.PI * 2,
-        wanderSpeed: 0.01 + Math.random() * 0.04,
+        speed: spd,
+        wanderAngle: Math.random() * Math.PI * 2,
         exploding: true,
         explodeTime: 0,
-        explodeDuration: 80 + Math.random() * 50
+        explodeDuration: 50 + Math.random() * 40
       });
     }
   }
@@ -98,7 +95,7 @@
   }
   
   function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, w, h);
     update();
     drawLines();
     drawDots();
@@ -106,38 +103,34 @@
   }
   
   function update() {
-    var w = canvas.width;
-    var h = canvas.height;
-    
     for (var i = 0; i < particles.length; i++) {
       var p = particles[i];
       
       if (p.exploding) {
-        // Explosion phase
         p.explodeTime++;
-        p.vx *= 0.975;
-        p.vy *= 0.975;
+        p.vx *= 0.97;
+        p.vy *= 0.97;
         p.x += p.vx;
         p.y += p.vy;
+        p.opacity = Math.min(0.3, p.explodeTime / 25);
         
-        // Fade in during explosion
-        p.opacity = Math.min(p.targetOpacity, p.explodeTime / 30);
-        
-        // End explosion
         if (p.explodeTime >= p.explodeDuration) {
           p.exploding = false;
           p.vx = Math.cos(p.angle) * p.speed;
           p.vy = Math.sin(p.angle) * p.speed;
         }
       } else {
-        // Normal floating phase
-        // Random direction changes
-        p.wander += p.wanderSpeed;
-        if (Math.random() < 0.03) {
-          p.wander = Math.random() * Math.PI * 2;
+        // Random direction changes - organic movement
+        p.wanderAngle += (Math.random() - 0.5) * 0.6;
+        p.vx += Math.cos(p.wanderAngle) * 0.08;
+        p.vy += Math.sin(p.wanderAngle) * 0.08;
+        
+        // Occasional random kick
+        if (Math.random() < 0.02) {
+          var kickAngle = Math.random() * Math.PI * 2;
+          p.vx += Math.cos(kickAngle) * 0.5;
+          p.vy += Math.sin(kickAngle) * 0.5;
         }
-        p.vx += Math.cos(p.wander) * 0.04;
-        p.vy += Math.sin(p.wander) * 0.04;
         
         // Mouse repulsion
         var dx = p.x - mouse.x;
@@ -152,26 +145,25 @@
         
         // Speed limit
         var currentSpeed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-        var maxSpeed = p.speed * 2.5;
+        var maxSpeed = p.speed * 3;
         if (currentSpeed > maxSpeed) {
           p.vx = (p.vx / currentSpeed) * maxSpeed;
           p.vy = (p.vy / currentSpeed) * maxSpeed;
         }
         
-        // Friction
-        p.vx *= 0.995;
-        p.vy *= 0.995;
+        // Very light friction
+        p.vx *= 0.997;
+        p.vy *= 0.997;
         
-        // Apply
         p.x += p.vx;
         p.y += p.vy;
       }
       
       // Wrap
-      if (p.x < -20) p.x = w + 20;
-      if (p.x > w + 20) p.x = -20;
-      if (p.y < -20) p.y = h + 20;
-      if (p.y > h + 20) p.y = -20;
+      if (p.x < -30) p.x = w + 30;
+      if (p.x > w + 30) p.x = -30;
+      if (p.y < -30) p.y = h + 30;
+      if (p.y > h + 30) p.y = -30;
     }
   }
   
