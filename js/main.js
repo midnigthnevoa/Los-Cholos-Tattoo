@@ -427,7 +427,19 @@ function renderCatalog() {
     }
     
     el.addEventListener("mousemove", function(e) { onMove(e.clientX, e.clientY); });
-    el.addEventListener("touchmove", function(e) { onMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+    el.addEventListener("touchstart", function(e) {
+      el.classList.add("is-touch-hover");
+      onMove(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
+    el.addEventListener("touchmove", function(e) {
+      onMove(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
+    el.addEventListener("touchend", function() {
+      el.classList.remove("is-touch-hover");
+    });
+    el.addEventListener("touchcancel", function() {
+      el.classList.remove("is-touch-hover");
+    });
   });
 })();
 
