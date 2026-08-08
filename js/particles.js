@@ -4,19 +4,19 @@
    ========================================================= */
 
 (function() {
-  var canvas, ctx, particles, mouseX, mouseY, isTouching, isMobile;
+  var canvas, ctx, particles, mouseX, mouseY, isTouching, isMobile, lastScrollY, isScrolling;
   
   var config = {
     particleCount: 60,
     particleMinSize: 1,
     particleMaxSize: 2.5,
-    particleSpeed: 0.2,
+    particleSpeed: 0.15,
     particleColor: { r: 200, g: 117, b: 51 }, // #C87533 copper
     particleColorAlt: { r: 232, g: 168, b: 124 }, // #E8A87C copper-light
-    mouseRadius: 100,
-    mouseForce: 0.06,
-    lineDistance: 80,
-    lineOpacity: 0.06
+    mouseRadius: 80,
+    mouseForce: 0.04,
+    lineDistance: 70,
+    lineOpacity: 0.05
   };
   
   function init() {
@@ -29,6 +29,8 @@
     mouseY = -1000;
     isTouching = false;
     isMobile = window.innerWidth < 768;
+    lastScrollY = window.scrollY;
+    isScrolling = false;
     
     resize();
     createParticles();
@@ -47,7 +49,7 @@
   
   function createParticles() {
     particles = [];
-    var count = isMobile ? config.particleCount / 2 : config.particleCount;
+    var count = isMobile ? 25 : config.particleCount;
     for (var i = 0; i < count; i++) {
       particles.push({
         x: Math.random() * window.innerWidth,
@@ -57,7 +59,7 @@
         vx: (Math.random() - 0.5) * config.particleSpeed,
         vy: (Math.random() - 0.5) * config.particleSpeed,
         size: config.particleMinSize + Math.random() * (config.particleMaxSize - config.particleMinSize),
-        opacity: 0.15 + Math.random() * 0.4,
+        opacity: 0.15 + Math.random() * 0.35,
         color: Math.random() > 0.5 ? config.particleColor : config.particleColorAlt
       });
     }
@@ -74,6 +76,15 @@
       }, 200);
     });
     
+    // Detect scroll and pause particle movement
+    window.addEventListener("scroll", function() {
+      isScrolling = true;
+      clearTimeout(window.scrollTimer);
+      window.scrollTimer = setTimeout(function() {
+        isScrolling = false;
+      }, 100);
+    }, { passive: true });
+    
     document.addEventListener("mousemove", function(e) {
       mouseX = e.clientX;
       mouseY = e.clientY;
@@ -84,7 +95,7 @@
       mouseY = -1000;
     });
     
-    // Touch support - only track touch position, don't let scroll affect particles
+    // Touch support
     document.addEventListener("touchstart", function(e) {
       isTouching = true;
       mouseX = e.touches[0].clientX;
@@ -108,7 +119,11 @@
   function animate() {
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
     
-    updateParticles();
+    // Only update particles when not scrolling
+    if (!isScrolling) {
+      updateParticles();
+    }
+    
     drawLines();
     drawParticles();
     
@@ -135,13 +150,13 @@
       p.x += p.vx;
       p.y += p.vy;
       
-      // Friction
-      p.vx *= 0.95;
-      p.vy *= 0.95;
+      // Friction - higher for more stability
+      p.vx *= 0.92;
+      p.vy *= 0.92;
       
       // Return to origin slowly
-      p.vx += (p.originX - p.x) * 0.001;
-      p.vy += (p.originY - p.y) * 0.001;
+      p.vx += (p.originX - p.x) * 0.0005;
+      p.vy += (p.originY - p.y) * 0.0005;
       
       // Bounds - wrap around
       if (p.x < -10) p.x = window.innerWidth + 10;
