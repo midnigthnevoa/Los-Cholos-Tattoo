@@ -49,7 +49,7 @@
     
     for (var i = 0; i < count; i++) {
       var angle = Math.random() * Math.PI * 2;
-      var expSpeed = 4 + Math.random() * 10;
+      var expSpeed = 2 + Math.random() * 5;
       particles.push({
         x: cx,
         y: cy,
@@ -65,7 +65,7 @@
         wanderSpeed: 0.02 + Math.random() * 0.03,
         exploding: true,
         explodeTime: 0,
-        explodeDuration: 40 + Math.random() * 30
+        explodeDuration: 60 + Math.random() * 40
       });
     }
   }
@@ -115,13 +115,13 @@
       if (p.exploding) {
         // Explosion phase
         p.explodeTime++;
-        p.vx *= 0.96;
-        p.vy *= 0.96;
+        p.vx *= 0.975;
+        p.vy *= 0.975;
         p.x += p.vx;
         p.y += p.vy;
         
         // Fade in during explosion
-        p.opacity = Math.min(p.targetOpacity, p.explodeTime / 20);
+        p.opacity = Math.min(p.targetOpacity, p.explodeTime / 30);
         
         // End explosion
         if (p.explodeTime >= p.explodeDuration) {
