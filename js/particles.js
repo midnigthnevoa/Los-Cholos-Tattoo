@@ -27,12 +27,12 @@
     mouse = { x: -9999, y: -9999 };
     isMobile = window.innerWidth < 768;
     
-    w = document.documentElement.clientWidth || window.innerWidth;
-    h = document.documentElement.clientHeight || window.innerHeight;
+    w = window.innerWidth;
+    h = window.innerHeight;
     canvas.width = w;
     canvas.height = h;
-    canvas.style.width = w + "px";
-    canvas.style.height = h + "px";
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
     
     createParticles();
     bindEvents();
@@ -44,14 +44,16 @@
     var count = isMobile ? 60 : config.count;
     var cx = w / 2;
     var cy = h / 2;
+    var expBase = isMobile ? 2 : 3;
+    var expRange = isMobile ? 4 : 6;
     
     for (var i = 0; i < count; i++) {
       var angle = Math.random() * Math.PI * 2;
-      var spd = 3 + Math.random() * 6;
+      var spd = expBase + Math.random() * expRange;
       
       particles.push({
-        x: cx + (Math.random() - 0.5) * 100,
-        y: cy + (Math.random() - 0.5) * 100,
+        x: cx + (Math.random() - 0.5) * 50,
+        y: cy + (Math.random() - 0.5) * 50,
         vx: Math.cos(angle) * spd,
         vy: Math.sin(angle) * spd,
         size: config.minSize + Math.random() * (config.maxSize - config.minSize),
