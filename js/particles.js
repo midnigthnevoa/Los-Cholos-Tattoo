@@ -11,8 +11,8 @@
     particleMinSize: 1,
     particleMaxSize: 2.5,
     particleSpeed: 0.15,
-    particleColor: { r: 200, g: 117, b: 51 }, // #C87533 copper
-    particleColorAlt: { r: 232, g: 168, b: 124 }, // #E8A87C copper-light
+    particleColor: { r: 200, g: 117, b: 51 },
+    particleColorAlt: { r: 232, g: 168, b: 124 },
     mouseRadius: 80,
     mouseForce: 0.05,
     lineDistance: 70,
@@ -29,25 +29,23 @@
     mouseY = -1000;
     isMobile = window.innerWidth < 768;
     
-    resize();
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
     createParticles();
     bindEvents();
     animate();
   }
   
-  function resize() {
-    // Simple resize without devicePixelRatio to avoid mobile issues
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  
   function createParticles() {
     particles = [];
     var count = isMobile ? 25 : config.particleCount;
+    var w = canvas.width;
+    var h = canvas.height;
     for (var i = 0; i < count; i++) {
       particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
+        x: Math.random() * w,
+        y: Math.random() * h,
         vx: (Math.random() - 0.5) * config.particleSpeed,
         vy: (Math.random() - 0.5) * config.particleSpeed,
         size: config.particleMinSize + Math.random() * (config.particleMaxSize - config.particleMinSize),
@@ -58,16 +56,6 @@
   }
   
   function bindEvents() {
-    var resizeTimeout;
-    window.addEventListener("resize", function() {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(function() {
-        isMobile = window.innerWidth < 768;
-        resize();
-        createParticles();
-      }, 200);
-    });
-    
     document.addEventListener("mousemove", function(e) {
       mouseX = e.clientX;
       mouseY = e.clientY;
@@ -78,7 +66,6 @@
       mouseY = -1000;
     });
     
-    // Touch support - simple and direct
     document.addEventListener("touchstart", function(e) {
       mouseX = e.touches[0].clientX;
       mouseY = e.touches[0].clientY;
@@ -106,10 +93,12 @@
   }
   
   function updateParticles() {
+    var w = canvas.width;
+    var h = canvas.height;
+    
     for (var i = 0; i < particles.length; i++) {
       var p = particles[i];
       
-      // Mouse/touch repulsion
       var dx = p.x - mouseX;
       var dy = p.y - mouseY;
       var dist = Math.sqrt(dx * dx + dy * dy);
@@ -121,19 +110,16 @@
         p.vy += Math.sin(angle) * force * config.mouseForce;
       }
       
-      // Apply velocity
       p.x += p.vx;
       p.y += p.vy;
       
-      // Friction
-      p.vx *= 0.94;
-      p.vy *= 0.94;
+      p.vx *= 0.95;
+      p.vy *= 0.95;
       
-      // Bounds - wrap around
-      if (p.x < 0) p.x = canvas.width;
-      if (p.x > canvas.width) p.x = 0;
-      if (p.y < 0) p.y = canvas.height;
-      if (p.y > canvas.height) p.y = 0;
+      if (p.x < -50) p.x = w + 50;
+      if (p.x > w + 50) p.x = -50;
+      if (p.y < -50) p.y = h + 50;
+      if (p.y > h + 50) p.y = -50;
     }
   }
   
@@ -168,7 +154,6 @@
     }
   }
   
-  // Initialize when DOM is ready
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
   } else {
