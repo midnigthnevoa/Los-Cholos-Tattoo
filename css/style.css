@@ -1023,3 +1023,246 @@ section { position: relative; }
 @media (max-width: 640px) {
   .footer-bottom { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
 }
+
+/* =========================================================
+   NEW LAYOUT — Los Cholos Redesign
+   ========================================================= */
+
+/* ---------- HERO CENTERED ---------- */
+.hero-centered {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+.hero-bg-image {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero-bg-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 15%;
+  filter: grayscale(0.8) brightness(0.3) contrast(1.2);
+}
+.hero-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(10,10,10,0.5) 0%, rgba(10,10,10,0.85) 100%);
+}
+.wm-hero-centered {
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 25vw;
+}
+.hero-centered-content {
+  position: relative;
+  z-index: 1;
+  padding: 120px 0 80px;
+  max-width: 700px;
+}
+.hero-centered-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(200, 117, 51, 0.35);
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin-bottom: 2rem;
+  backdrop-filter: blur(10px);
+  background: rgba(10, 10, 10, 0.3);
+}
+.hero-centered-title {
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 14vw, 10rem);
+  font-weight: 400;
+  line-height: 0.85;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.hero-centered-sub {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.55em;
+  text-transform: uppercase;
+  color: var(--copper-light);
+  margin-top: 1.5rem;
+}
+.hero-centered-desc {
+  color: var(--stone-300);
+  font-size: 1.05rem;
+  line-height: 1.8;
+  margin-top: 1.5rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.hero-centered-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2.5rem;
+}
+
+/* ---------- BTN GHOST ---------- */
+.btn-ghost {
+  background: transparent;
+  color: var(--cream);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.btn-ghost::before { background: rgba(255,255,255,0.1); }
+.btn-ghost:hover { color: #fff; }
+
+/* ---------- ABOUT SPLIT ---------- */
+.about-split-grid {
+  display: grid;
+  gap: 3rem;
+  align-items: center;
+}
+@media (min-width: 1024px) {
+  .about-split-grid {
+    grid-template-columns: 1fr 1.2fr;
+    gap: 5rem;
+  }
+}
+.about-split-img {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+.about-split-img img {
+  width: 100%;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  filter: grayscale(0.6) brightness(0.85) contrast(1.1);
+  transition: filter 0.8s var(--ease);
+}
+.about-split-img:hover img {
+  filter: grayscale(0) brightness(1) contrast(1);
+}
+.about-split-stats {
+  display: flex;
+  gap: 3rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--line);
+}
+.about-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.about-stat-num {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  color: var(--copper);
+  line-height: 1;
+}
+.about-stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--stone-500);
+}
+
+/* ---------- SERVICES STACK ---------- */
+.services-stack {
+  display: grid;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.service-stack-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 2rem;
+  align-items: center;
+  padding: 2rem;
+  background: var(--bg-2);
+  transition: background 0.4s;
+}
+@media (max-width: 768px) {
+  .service-stack-item {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+.service-stack-item:hover {
+  background: var(--bg-3);
+}
+.service-stack-num {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--copper);
+  line-height: 1;
+  opacity: 0.5;
+}
+.service-stack-content h3 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.service-stack-content p {
+  color: var(--stone-400);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  max-width: 400px;
+}
+
+/* ---------- LOCATION GRID ---------- */
+.location-grid {
+  display: grid;
+  gap: 3rem;
+}
+@media (min-width: 1024px) {
+  .location-grid {
+    grid-template-columns: 1fr 1.5fr;
+    gap: 4rem;
+    align-items: center;
+  }
+}
+
+/* ---------- CTA FINAL ---------- */
+.cta-final {
+  padding: 6rem 0;
+  position: relative;
+  overflow: hidden;
+}
+.cta-final::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--copper) 0%, var(--copper-dark) 100%);
+  opacity: 0.1;
+}
+.cta-final-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.cta-final-text {
+  color: var(--stone-400);
+  font-size: 1.05rem;
+  margin-top: 1rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
