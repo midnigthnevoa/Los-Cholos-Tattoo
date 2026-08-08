@@ -4,7 +4,7 @@
    ========================================================= */
 
 (function() {
-  var canvas, ctx, particles, mouseX, mouseY, isTouching, isMobile, lastScrollY, isScrolling;
+  var canvas, ctx, particles, mouseX, mouseY, isTouching, isMobile, scrollVelocity;
   
   var config = {
     particleCount: 60,
@@ -14,7 +14,7 @@
     particleColor: { r: 200, g: 117, b: 51 }, // #C87533 copper
     particleColorAlt: { r: 232, g: 168, b: 124 }, // #E8A87C copper-light
     mouseRadius: 80,
-    mouseForce: 0.04,
+    mouseForce: 0.05,
     lineDistance: 70,
     lineOpacity: 0.05
   };
@@ -29,8 +29,7 @@
     mouseY = -1000;
     isTouching = false;
     isMobile = window.innerWidth < 768;
-    lastScrollY = window.scrollY;
-    isScrolling = false;
+    scrollVelocity = 0;
     
     resize();
     createParticles();
@@ -49,7 +48,7 @@
   
   function createParticles() {
     particles = [];
-    var count = isMobile ? 25 : config.particleCount;
+    var count = isMobile ? 30 : config.particleCount;
     for (var i = 0; i < count; i++) {
       particles.push({
         x: Math.random() * window.innerWidth,
@@ -76,13 +75,16 @@
       }, 200);
     });
     
-    // Detect scroll and pause particle movement
+    // Track scroll velocity
+    var lastScrollY = window.scrollY;
+    var scrollTimeout;
     window.addEventListener("scroll", function() {
-      isScrolling = true;
-      clearTimeout(window.scrollTimer);
-      window.scrollTimer = setTimeout(function() {
-        isScrolling = false;
-      }, 100);
+      scrollVelocity = Math.abs(window.scrollY - lastScrollY);
+      lastScrollY = window.scrollY;
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(function() {
+        scrollVelocity = 0;
+      }, 50);
     }, { passive: true });
     
     document.addEventListener("mousemove", function(e) {
@@ -95,7 +97,7 @@
       mouseY = -1000;
     });
     
-    // Touch support
+    // Touch support - always track touch position
     document.addEventListener("touchstart", function(e) {
       isTouching = true;
       mouseX = e.touches[0].clientX;
@@ -103,10 +105,8 @@
     }, { passive: true });
     
     document.addEventListener("touchmove", function(e) {
-      if (isTouching) {
-        mouseX = e.touches[0].clientX;
-        mouseY = e.touches[0].clientY;
-      }
+      mouseX = e.touches[0].clientX;
+      mouseY = e.touches[0].clientY;
     }, { passive: true });
     
     document.addEventListener("touchend", function() {
@@ -119,11 +119,7 @@
   function animate() {
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
     
-    // Only update particles when not scrolling
-    if (!isScrolling) {
-      updateParticles();
-    }
-    
+    updateParticles();
     drawLines();
     drawParticles();
     
@@ -134,7 +130,7 @@
     for (var i = 0; i < particles.length; i++) {
       var p = particles[i];
       
-      // Mouse/touch repulsion
+      // Mouse/touch repulsion - always active
       var dx = p.x - mouseX;
       var dy = p.y - mouseY;
       var dist = Math.sqrt(dx * dx + dy * dy);
@@ -146,17 +142,18 @@
         p.vy += Math.sin(angle) * force * config.mouseForce;
       }
       
-      // Apply velocity
-      p.x += p.vx;
-      p.y += p.vy;
+      // Apply velocity (reduced during scroll for stability)
+      var scrollFactor = scrollVelocity > 2 ? 0.3 : 1;
+      p.x += p.vx * scrollFactor;
+      p.y += p.vy * scrollFactor;
       
-      // Friction - higher for more stability
-      p.vx *= 0.92;
-      p.vy *= 0.92;
+      // Friction
+      p.vx *= 0.94;
+      p.vy *= 0.94;
       
       // Return to origin slowly
-      p.vx += (p.originX - p.x) * 0.0005;
-      p.vy += (p.originY - p.y) * 0.0005;
+      p.vx += (p.originX - p.x) * 0.0003;
+      p.vy += (p.originY - p.y) * 0.0003;
       
       // Bounds - wrap around
       if (p.x < -10) p.x = window.innerWidth + 10;
