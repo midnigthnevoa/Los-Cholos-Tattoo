@@ -938,6 +938,16 @@ section { position: relative; }
   color: var(--stone-600);
   text-transform: uppercase;
 }
+.footer-map {
+  margin-bottom: 2rem;
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+.footer-map iframe {
+  display: block;
+  width: 100%;
+  height: 200px;
+}
 .footer-grid {
   display: grid;
   grid-template-columns: 1fr;

@@ -76,7 +76,7 @@ function injectShell() {
   var footer =
     '<footer class="site-footer"><span class="watermark wm-footer">LOS CHOLOS</span><div class="container">' +
     '<div class="footer-top"><p class="footer-tag">Blackwork, dark ornamental e design autoral. <span class="grad">A cultura latina</span> em composições atemporais na pele.</p>' +
-    '<span class="footer-seal">' + SITE.coords + "</span></div>" +
+    '<div class="footer-map"><iframe src="https://maps.google.com/maps?q=-19.870195,-43.992950&t=&z=15&ie=UTF8&iwloc=&output=embed" width="100%" height="200" style="border:0;filter:grayscale(0.8) brightness(0.9) contrast(1.1);width:100%;max-width:100%" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Los Cholos Tattoo — Localização"></iframe></div>' +
     '<div class="footer-grid">' +
     '<div class="footer-col"><h4>Explore</h4><ul>' +
     '<li><a href="sobre.html">Sobre</a></li>' +
