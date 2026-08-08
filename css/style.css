@@ -1647,9 +1647,19 @@ section { position: relative; }
   opacity: 1;
 }
 
-/* ---------- SMOOTH SCROLL ---------- */
 html {
   scroll-behavior: smooth;
+}
+
+/* ---------- PARTICLES CANVAS ---------- */
+#particles-canvas {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
 }
 
 /* ---------- SEPARATOR LINE ---------- */

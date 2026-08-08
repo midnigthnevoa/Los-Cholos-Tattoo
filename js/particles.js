@@ -4,19 +4,19 @@
    ========================================================= */
 
 (function() {
-  var canvas, ctx, particles, mouseX, mouseY, isTouching;
+  var canvas, ctx, particles, mouseX, mouseY, isTouching, isMobile;
   
   var config = {
-    particleCount: 80,
+    particleCount: 60,
     particleMinSize: 1,
-    particleMaxSize: 3,
-    particleSpeed: 0.3,
+    particleMaxSize: 2.5,
+    particleSpeed: 0.2,
     particleColor: { r: 200, g: 117, b: 51 }, // #C87533 copper
     particleColorAlt: { r: 232, g: 168, b: 124 }, // #E8A87C copper-light
-    mouseRadius: 120,
-    mouseForce: 0.08,
-    lineDistance: 100,
-    lineOpacity: 0.08
+    mouseRadius: 100,
+    mouseForce: 0.06,
+    lineDistance: 80,
+    lineOpacity: 0.06
   };
   
   function init() {
@@ -28,6 +28,7 @@
     mouseX = -1000;
     mouseY = -1000;
     isTouching = false;
+    isMobile = window.innerWidth < 768;
     
     resize();
     createParticles();
@@ -36,29 +37,41 @@
   }
   
   function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    var dpr = window.devicePixelRatio || 1;
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = window.innerHeight * dpr;
+    canvas.style.width = window.innerWidth + "px";
+    canvas.style.height = window.innerHeight + "px";
+    ctx.scale(dpr, dpr);
   }
   
   function createParticles() {
     particles = [];
-    for (var i = 0; i < config.particleCount; i++) {
+    var count = isMobile ? config.particleCount / 2 : config.particleCount;
+    for (var i = 0; i < count; i++) {
       particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        originX: Math.random() * window.innerWidth,
+        originY: Math.random() * window.innerHeight,
         vx: (Math.random() - 0.5) * config.particleSpeed,
         vy: (Math.random() - 0.5) * config.particleSpeed,
         size: config.particleMinSize + Math.random() * (config.particleMaxSize - config.particleMinSize),
-        opacity: 0.2 + Math.random() * 0.5,
+        opacity: 0.15 + Math.random() * 0.4,
         color: Math.random() > 0.5 ? config.particleColor : config.particleColorAlt
       });
     }
   }
   
   function bindEvents() {
+    var resizeTimeout;
     window.addEventListener("resize", function() {
-      resize();
-      createParticles();
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(function() {
+        isMobile = window.innerWidth < 768;
+        resize();
+        createParticles();
+      }, 200);
     });
     
     document.addEventListener("mousemove", function(e) {
@@ -71,7 +84,7 @@
       mouseY = -1000;
     });
     
-    // Touch support
+    // Touch support - only track touch position, don't let scroll affect particles
     document.addEventListener("touchstart", function(e) {
       isTouching = true;
       mouseX = e.touches[0].clientX;
@@ -79,8 +92,10 @@
     }, { passive: true });
     
     document.addEventListener("touchmove", function(e) {
-      mouseX = e.touches[0].clientX;
-      mouseY = e.touches[0].clientY;
+      if (isTouching) {
+        mouseX = e.touches[0].clientX;
+        mouseY = e.touches[0].clientY;
+      }
     }, { passive: true });
     
     document.addEventListener("touchend", function() {
@@ -91,7 +106,7 @@
   }
   
   function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
     
     updateParticles();
     drawLines();
@@ -109,7 +124,7 @@
       var dy = p.y - mouseY;
       var dist = Math.sqrt(dx * dx + dy * dy);
       
-      if (dist < config.mouseRadius) {
+      if (dist < config.mouseRadius && dist > 0) {
         var force = (config.mouseRadius - dist) / config.mouseRadius;
         var angle = Math.atan2(dy, dx);
         p.vx += Math.cos(angle) * force * config.mouseForce;
@@ -121,14 +136,18 @@
       p.y += p.vy;
       
       // Friction
-      p.vx *= 0.98;
-      p.vy *= 0.98;
+      p.vx *= 0.95;
+      p.vy *= 0.95;
       
-      // Bounds
-      if (p.x < 0) p.x = canvas.width;
-      if (p.x > canvas.width) p.x = 0;
-      if (p.y < 0) p.y = canvas.height;
-      if (p.y > canvas.height) p.y = 0;
+      // Return to origin slowly
+      p.vx += (p.originX - p.x) * 0.001;
+      p.vy += (p.originY - p.y) * 0.001;
+      
+      // Bounds - wrap around
+      if (p.x < -10) p.x = window.innerWidth + 10;
+      if (p.x > window.innerWidth + 10) p.x = -10;
+      if (p.y < -10) p.y = window.innerHeight + 10;
+      if (p.y > window.innerHeight + 10) p.y = -10;
     }
   }
   
@@ -143,7 +162,6 @@
   }
   
   function drawLines() {
-    ctx.strokeStyle = "rgba(" + config.particleColor.r + "," + config.particleColor.g + "," + config.particleColor.b + "," + config.lineOpacity + ")";
     ctx.lineWidth = 0.5;
     
     for (var i = 0; i < particles.length; i++) {
