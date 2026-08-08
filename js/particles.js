@@ -117,16 +117,16 @@
       }
       
       // Gentle drift
-      p.vx += (Math.random() - 0.5) * 0.02;
-      p.vy += (Math.random() - 0.5) * 0.02;
+      p.vx += (Math.random() - 0.5) * 0.06;
+      p.vy += (Math.random() - 0.5) * 0.06;
       
       // Return to home position
       p.vx += (p.homeX - p.x) * config.returnForce;
       p.vy += (p.homeY - p.y) * config.returnForce;
       
       // Friction
-      p.vx *= 0.92;
-      p.vy *= 0.92;
+      p.vx *= 0.95;
+      p.vy *= 0.95;
       
       // Apply velocity
       p.x += p.vx;
