@@ -62,7 +62,7 @@
         angle: angle,
         speed: 0.2 + Math.random() * config.speed,
         wander: Math.random() * Math.PI * 2,
-        wanderSpeed: 0.015 + Math.random() * 0.025,
+        wanderSpeed: 0.01 + Math.random() * 0.04,
         exploding: true,
         explodeTime: 0,
         explodeDuration: 80 + Math.random() * 50
@@ -131,10 +131,13 @@
         }
       } else {
         // Normal floating phase
-        // Wander
+        // Random direction changes
         p.wander += p.wanderSpeed;
-        p.vx += Math.cos(p.wander) * 0.03;
-        p.vy += Math.sin(p.wander) * 0.03;
+        if (Math.random() < 0.03) {
+          p.wander = Math.random() * Math.PI * 2;
+        }
+        p.vx += Math.cos(p.wander) * 0.04;
+        p.vy += Math.sin(p.wander) * 0.04;
         
         // Mouse repulsion
         var dx = p.x - mouse.x;
@@ -156,8 +159,8 @@
         }
         
         // Friction
-        p.vx *= 0.998;
-        p.vy *= 0.998;
+        p.vx *= 0.995;
+        p.vy *= 0.995;
         
         // Apply
         p.x += p.vx;
