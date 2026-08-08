@@ -10,11 +10,11 @@
     count: 50,
     minSize: 0.8,
     maxSize: 2.2,
-    speed: 0.4,
+    speed: 0.2,
     color: { r: 200, g: 117, b: 51 },
     colorAlt: { r: 232, g: 168, b: 124 },
     mouseRadius: 150,
-    mouseForce: 1.2,
+    mouseForce: 0.8,
     lineDistance: 120,
     lineOpacity: 0.08
   };
@@ -121,15 +121,15 @@
         }
       } else {
         // Random direction changes - organic movement
-        p.wanderAngle += (Math.random() - 0.5) * 0.6;
-        p.vx += Math.cos(p.wanderAngle) * 0.08;
-        p.vy += Math.sin(p.wanderAngle) * 0.08;
+        p.wanderAngle += (Math.random() - 0.5) * 0.3;
+        p.vx += Math.cos(p.wanderAngle) * 0.04;
+        p.vy += Math.sin(p.wanderAngle) * 0.04;
         
         // Occasional random kick
         if (Math.random() < 0.02) {
           var kickAngle = Math.random() * Math.PI * 2;
-          p.vx += Math.cos(kickAngle) * 0.5;
-          p.vy += Math.sin(kickAngle) * 0.5;
+          p.vx += Math.cos(kickAngle) * 0.3;
+          p.vy += Math.sin(kickAngle) * 0.3;
         }
         
         // Mouse repulsion
@@ -145,7 +145,7 @@
         
         // Speed limit
         var currentSpeed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-        var maxSpeed = p.speed * 3;
+        var maxSpeed = p.speed * 2;
         if (currentSpeed > maxSpeed) {
           p.vx = (p.vx / currentSpeed) * maxSpeed;
           p.vy = (p.vy / currentSpeed) * maxSpeed;
