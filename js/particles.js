@@ -116,10 +116,11 @@
       p.vx *= 0.95;
       p.vy *= 0.95;
       
-      if (p.x < -50) p.x = w + 50;
-      if (p.x > w + 50) p.x = -50;
-      if (p.y < -50) p.y = h + 50;
-      if (p.y > h + 50) p.y = -50;
+      // Bounce off edges - no jumping
+      if (p.x < 0) { p.x = 0; p.vx *= -0.5; }
+      if (p.x > w) { p.x = w; p.vx *= -0.5; }
+      if (p.y < 0) { p.y = 0; p.vy *= -0.5; }
+      if (p.y > h) { p.y = h; p.vy *= -0.5; }
     }
   }
   
