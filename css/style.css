@@ -1469,3 +1469,208 @@ section { position: relative; }
   color: var(--cream);
   font-size: 0.95rem;
 }
+
+/* =========================================================
+   EFFECTS & INTERACTIONS — Los Cholos
+   ========================================================= */
+
+/* ---------- CUSTOM CURSOR ---------- */
+.cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--copper);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transition: transform 0.15s ease-out, opacity 0.15s ease-out, background 0.2s, border-color 0.2s;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+}
+.cursor.hidden { opacity: 0; }
+.cursor.active { 
+  transform: translate(-50%, -50%) scale(2.5); 
+  background: rgba(200, 117, 51, 0.15);
+  border-color: var(--copper-light);
+}
+.cursor.pointer { 
+  transform: translate(-50%, -50%) scale(1.8); 
+  background: var(--copper);
+  border-color: var(--copper);
+}
+.cursor.pointer::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: #000;
+}
+.cursor-text {
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #fff;
+  position: absolute;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.cursor.active .cursor-text { opacity: 1; }
+@media (max-width: 1024px) {
+  .cursor, .cursor-text { display: none; }
+}
+
+/* ---------- MAGNETIC BUTTON ---------- */
+.magnetic {
+  position: relative;
+  display: inline-flex;
+}
+.magnetic-inner {
+  transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* ---------- TEXT REVEAL ---------- */
+.text-reveal {
+  overflow: hidden;
+}
+.text-reveal-inner {
+  transform: translateY(100%);
+  animation: textReveal 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  animation-delay: var(--rd, 0s);
+}
+@keyframes textReveal {
+  to { transform: translateY(0); }
+}
+
+/* ---------- STAGGER CHILDREN ---------- */
+.stagger > * {
+  opacity: 0;
+  transform: translateY(20px);
+}
+.stagger.is-visible > * {
+  animation: staggerIn 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+.stagger.is-visible > *:nth-child(1) { animation-delay: 0s; }
+.stagger.is-visible > *:nth-child(2) { animation-delay: 0.08s; }
+.stagger.is-visible > *:nth-child(3) { animation-delay: 0.16s; }
+.stagger.is-visible > *:nth-child(4) { animation-delay: 0.24s; }
+.stagger.is-visible > *:nth-child(5) { animation-delay: 0.32s; }
+@keyframes staggerIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- HOVER LIFT ---------- */
+.hover-lift {
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s;
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.4);
+}
+
+/* ---------- HOVER GLOW ---------- */
+.hover-glow {
+  position: relative;
+  overflow: hidden;
+}
+.hover-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(200, 117, 51, 0.15) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+}
+.hover-glow:hover::before {
+  opacity: 1;
+}
+
+/* ---------- LINE DRAW ---------- */
+.line-draw {
+  position: relative;
+}
+.line-draw::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--copper);
+  transition: width 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.line-draw:hover::after {
+  width: 100%;
+}
+
+/* ---------- SCALE IMAGE ---------- */
+.scale-img {
+  overflow: hidden;
+}
+.scale-img img {
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.scale-img:hover img {
+  transform: scale(1.05);
+}
+
+/* ---------- TILT CARD ---------- */
+.tilt-card {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+.tilt-card-inner {
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* ---------- MARQUEE SPEED ---------- */
+.marquee:hover .marquee-track {
+  animation-duration: 15s;
+}
+
+/* ---------- NUMBER COUNTER ---------- */
+.count-up {
+  display: inline-block;
+}
+
+/* ---------- BLUR REVEAL ---------- */
+.blur-reveal {
+  filter: blur(8px);
+  opacity: 0;
+  transition: filter 0.8s, opacity 0.8s;
+}
+.blur-reveal.is-visible {
+  filter: blur(0);
+  opacity: 1;
+}
+
+/* ---------- SMOOTH SCROLL ---------- */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ---------- SEPARATOR LINE ---------- */
+.separator {
+  width: 60px;
+  height: 2px;
+  background: var(--copper);
+  margin: 2rem 0;
+}
+
+/* ---------- HORIZONTAL SCROLL TEXT ---------- */
+.scroll-text {
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 10vw, 8rem);
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(200, 117, 51, 0.2);
+  animation: scrollText 20s linear infinite;
+}
+@keyframes scrollText {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}

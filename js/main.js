@@ -311,3 +311,220 @@ function renderCatalog() {
 
   root.insertAdjacentHTML("beforeend", html + skillsHtml);
 }
+
+/* =========================================================
+   EFFECTS & INTERACTIONS
+   ========================================================= */
+
+/* ---------- CUSTOM CURSOR ---------- */
+(function initCursor() {
+  if (window.innerWidth < 1024) return;
+  
+  var cursor = document.createElement("div");
+  cursor.className = "cursor";
+  cursor.innerHTML = '<span class="cursor-text"></span>';
+  document.body.appendChild(cursor);
+  
+  var cursorText = cursor.querySelector(".cursor-text");
+  var mouseX = 0, mouseY = 0;
+  var cursorX = 0, cursorY = 0;
+  
+  document.addEventListener("mousemove", function(e) {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+  
+  function animateCursor() {
+    cursorX += (mouseX - cursorX) * 0.15;
+    cursorY += (mouseY - cursorY) * 0.15;
+    cursor.style.left = cursorX + "px";
+    cursor.style.top = cursorY + "px";
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+  
+  // Hover states
+  var interactives = "a, button, .btn, .slider-btn, .burger, [data-wa]";
+  document.addEventListener("mouseover", function(e) {
+    var target = e.target.closest(interactives);
+    if (target) {
+      cursor.classList.add("pointer");
+      cursor.classList.remove("active");
+    }
+  });
+  document.addEventListener("mouseout", function(e) {
+    var target = e.target.closest(interactives);
+    if (target) {
+      cursor.classList.remove("pointer");
+    }
+  });
+  
+  // Click effect
+  document.addEventListener("mousedown", function() {
+    cursor.classList.add("active");
+  });
+  document.addEventListener("mouseup", function() {
+    cursor.classList.remove("active");
+  });
+  
+  // Hide on leave
+  document.addEventListener("mouseleave", function() {
+    cursor.classList.add("hidden");
+  });
+  document.addEventListener("mouseenter", function() {
+    cursor.classList.remove("hidden");
+  });
+})();
+
+/* ---------- MAGNETIC BUTTONS ---------- */
+(function initMagnetic() {
+  if (window.innerWidth < 1024) return;
+  
+  var magnets = document.querySelectorAll(".magnetic");
+  magnets.forEach(function(magnet) {
+    var inner = magnet.querySelector(".magnetic-inner") || magnet;
+    
+    magnet.addEventListener("mousemove", function(e) {
+      var rect = magnet.getBoundingClientRect();
+      var x = e.clientX - rect.left - rect.width / 2;
+      var y = e.clientY - rect.top - rect.height / 2;
+      inner.style.transform = "translate(" + (x * 0.3) + "px, " + (y * 0.3) + "px)";
+    });
+    
+    magnet.addEventListener("mouseleave", function() {
+      inner.style.transform = "translate(0, 0)";
+    });
+  });
+})();
+
+/* ---------- HOVER GLOW EFFECT ---------- */
+(function initGlow() {
+  document.querySelectorAll(".hover-glow").forEach(function(el) {
+    el.addEventListener("mousemove", function(e) {
+      var rect = el.getBoundingClientRect();
+      var x = ((e.clientX - rect.left) / rect.width) * 100;
+      var y = ((e.clientY - rect.top) / rect.height) * 100;
+      el.style.setProperty("--mouse-x", x + "%");
+      el.style.setProperty("--mouse-y", y + "%");
+    });
+  });
+})();
+
+/* ---------- TILT CARDS ---------- */
+(function initTilt() {
+  if (window.innerWidth < 1024) return;
+  
+  document.querySelectorAll(".tilt-card").forEach(function(card) {
+    var inner = card.querySelector(".tilt-card-inner") || card;
+    
+    card.addEventListener("mousemove", function(e) {
+      var rect = card.getBoundingClientRect();
+      var x = (e.clientX - rect.left) / rect.width - 0.5;
+      var y = (e.clientY - rect.top) / rect.height - 0.5;
+      inner.style.transform = "rotateY(" + (x * 10) + "deg) rotateX(" + (-y * 10) + "deg)";
+    });
+    
+    card.addEventListener("mouseleave", function() {
+      inner.style.transform = "rotateY(0) rotateX(0)";
+    });
+  });
+})();
+
+/* ---------- SMOOTH ANCHOR SCROLL ---------- */
+document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+  anchor.addEventListener("click", function(e) {
+    var target = document.querySelector(this.getAttribute("href"));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  });
+});
+
+/* ---------- STAGGER ANIMATION ---------- */
+function initStagger() {
+  var staggerEls = document.querySelectorAll(".stagger");
+  if (!("IntersectionObserver" in window)) {
+    staggerEls.forEach(function(el) { el.classList.add("is-visible"); });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  staggerEls.forEach(function(el) { io.observe(el); });
+}
+initStagger();
+
+/* ---------- PARALLAX ON SCROLL ---------- */
+(function initParallax() {
+  var parallaxEls = document.querySelectorAll("[data-parallax]");
+  if (!parallaxEls.length) return;
+  
+  function onScroll() {
+    var scrollY = window.scrollY;
+    parallaxEls.forEach(function(el) {
+      var speed = parseFloat(el.dataset.parallax) || 0.1;
+      var rect = el.getBoundingClientRect();
+      var offset = (rect.top + scrollY - window.innerHeight / 2) * speed;
+      el.style.transform = "translateY(" + (-offset) + "px)";
+    });
+  }
+  
+  window.addEventListener("scroll", function() {
+    requestAnimationFrame(onScroll);
+  }, { passive: true });
+})();
+
+/* ---------- TEXT COUNTER ANIMATION ---------- */
+function animateValue(el, start, end, suffix, duration) {
+  var startTimestamp = null;
+  var step = function(timestamp) {
+    if (!startTimestamp) startTimestamp = timestamp;
+    var progress = Math.min((timestamp - startTimestamp) / duration, 1);
+    var eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.floor(start + (end - start) * eased) + (suffix || "");
+    if (progress < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+function initCountUp() {
+  var countEls = document.querySelectorAll("[data-count]");
+  if (!countEls.length) return;
+  
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (!entry.isIntersecting) return;
+      var el = entry.target;
+      var target = parseInt(el.dataset.count, 10);
+      var suffix = el.dataset.suffix || "";
+      animateValue(el, 0, target, suffix, 1800);
+      io.unobserve(el);
+    });
+  }, { threshold: 0.4 });
+  
+  countEls.forEach(function(el) { io.observe(el); });
+}
+initCountUp();
+
+/* ---------- CURSOR TEXT ON CARDS ---------- */
+(function initCursorText() {
+  if (window.innerWidth < 1024) return;
+  
+  var cursorText = document.querySelector(".cursor-text");
+  if (!cursorText) return;
+  
+  document.querySelectorAll("[data-cursor]").forEach(function(el) {
+    el.addEventListener("mouseenter", function() {
+      cursorText.textContent = el.dataset.cursor;
+    });
+    el.addEventListener("mouseleave", function() {
+      cursorText.textContent = "";
+    });
+  });
+})();
