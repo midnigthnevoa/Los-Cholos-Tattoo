@@ -275,7 +275,7 @@ function renderCatalog() {
       '<section class="section" id="' + cat.slug + '">' +
       '<div class="container">' +
       '<div class="section-head reveal">' +
-      '<span class="eyebrow">Project_Category // Estilo ' + n + "/" + total + "</span>" +
+      '<span class="eyebrow">Estilo ' + n + " de " + total + "</span>" +
       '<h1 class="h-page" style="margin-top:1.2rem;margin-bottom:1.5rem">' + title + "</h1>" +
       '<p class="lead" style="color:var(--stone-400);max-width:40rem;font-size:1.02rem;margin-bottom:1.5rem">' + cat.desc + "</p>" +
       '<div class="tags" style="margin-bottom:2rem">' + cat.features.map(function (f) { return '<span class="tag">' + f + "</span>"; }).join("") + "</div>" +
@@ -303,7 +303,7 @@ function renderCatalog() {
   var skillsHtml =
     '<section class="section" style="background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">' +
     '<div class="container">' +
-    '<div class="section-head reveal"><span class="eyebrow">Additional_Technical // Skills</span>' +
+    '<div class="section-head reveal"><span class="eyebrow">Outras Especialidades</span>' +
     '<h2 class="h-section" style="margin-top:1.2rem">Outras Habilidades<br><span class="grad">Técnicas</span></h2></div>' +
     '<div class="skill-tags">' + skills + "</div>" +
     '<p class="mono-note" style="margin-top:1.5rem">Nota: Portfólio visual em processamento. Clique acima para agendar estas especialidades.</p>' +
