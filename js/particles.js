@@ -29,8 +29,12 @@
     mouseY = -1000;
     isMobile = window.innerWidth < 768;
     
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    var w = document.documentElement.clientWidth || window.innerWidth;
+    var h = document.documentElement.clientHeight || window.innerHeight;
+    canvas.width = w;
+    canvas.height = h;
+    canvas.style.width = w + "px";
+    canvas.style.height = h + "px";
     
     createParticles();
     bindEvents();
