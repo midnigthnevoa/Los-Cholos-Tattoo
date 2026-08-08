@@ -7,15 +7,15 @@
   var canvas, ctx, particles, mouse, isMobile, w, h;
   
   var config = {
-    count: 50,
-    minSize: 0.8,
-    maxSize: 2.2,
-    speed: 0.2,
+    count: 80,
+    minSize: 0.6,
+    maxSize: 2,
+    speed: 0.12,
     color: { r: 200, g: 117, b: 51 },
     colorAlt: { r: 232, g: 168, b: 124 },
     mouseRadius: 150,
-    mouseForce: 0.8,
-    lineDistance: 120,
+    mouseForce: 0.6,
+    lineDistance: 140,
     lineOpacity: 0.08
   };
   
@@ -41,7 +41,7 @@
   
   function createParticles() {
     particles = [];
-    var count = isMobile ? 25 : config.count;
+    var count = isMobile ? 40 : config.count;
     
     for (var i = 0; i < count; i++) {
       var angle = Math.random() * Math.PI * 2;
@@ -121,15 +121,15 @@
         }
       } else {
         // Random direction changes - organic movement
-        p.wanderAngle += (Math.random() - 0.5) * 0.3;
-        p.vx += Math.cos(p.wanderAngle) * 0.04;
-        p.vy += Math.sin(p.wanderAngle) * 0.04;
+        p.wanderAngle += (Math.random() - 0.5) * 0.2;
+        p.vx += Math.cos(p.wanderAngle) * 0.025;
+        p.vy += Math.sin(p.wanderAngle) * 0.025;
         
         // Occasional random kick
-        if (Math.random() < 0.02) {
+        if (Math.random() < 0.015) {
           var kickAngle = Math.random() * Math.PI * 2;
-          p.vx += Math.cos(kickAngle) * 0.3;
-          p.vy += Math.sin(kickAngle) * 0.3;
+          p.vx += Math.cos(kickAngle) * 0.2;
+          p.vy += Math.sin(kickAngle) * 0.2;
         }
         
         // Mouse repulsion
@@ -145,7 +145,7 @@
         
         // Speed limit
         var currentSpeed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-        var maxSpeed = p.speed * 2;
+        var maxSpeed = p.speed * 1.8;
         if (currentSpeed > maxSpeed) {
           p.vx = (p.vx / currentSpeed) * maxSpeed;
           p.vy = (p.vy / currentSpeed) * maxSpeed;
