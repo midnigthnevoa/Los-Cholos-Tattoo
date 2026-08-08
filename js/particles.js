@@ -4,7 +4,7 @@
    ========================================================= */
 
 (function() {
-  var canvas, ctx, particles, mouseX, mouseY, isTouching, isMobile, scrollVelocity;
+  var canvas, ctx, particles, mouseX, mouseY, isMobile;
   
   var config = {
     particleCount: 60,
@@ -27,9 +27,7 @@
     particles = [];
     mouseX = -1000;
     mouseY = -1000;
-    isTouching = false;
     isMobile = window.innerWidth < 768;
-    scrollVelocity = 0;
     
     resize();
     createParticles();
@@ -38,23 +36,18 @@
   }
   
   function resize() {
-    var dpr = window.devicePixelRatio || 1;
-    canvas.width = window.innerWidth * dpr;
-    canvas.height = window.innerHeight * dpr;
-    canvas.style.width = window.innerWidth + "px";
-    canvas.style.height = window.innerHeight + "px";
-    ctx.scale(dpr, dpr);
+    // Simple resize without devicePixelRatio to avoid mobile issues
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
   }
   
   function createParticles() {
     particles = [];
-    var count = isMobile ? 30 : config.particleCount;
+    var count = isMobile ? 25 : config.particleCount;
     for (var i = 0; i < count; i++) {
       particles.push({
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
-        originX: Math.random() * window.innerWidth,
-        originY: Math.random() * window.innerHeight,
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
         vx: (Math.random() - 0.5) * config.particleSpeed,
         vy: (Math.random() - 0.5) * config.particleSpeed,
         size: config.particleMinSize + Math.random() * (config.particleMaxSize - config.particleMinSize),
@@ -75,18 +68,6 @@
       }, 200);
     });
     
-    // Track scroll velocity
-    var lastScrollY = window.scrollY;
-    var scrollTimeout;
-    window.addEventListener("scroll", function() {
-      scrollVelocity = Math.abs(window.scrollY - lastScrollY);
-      lastScrollY = window.scrollY;
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(function() {
-        scrollVelocity = 0;
-      }, 50);
-    }, { passive: true });
-    
     document.addEventListener("mousemove", function(e) {
       mouseX = e.clientX;
       mouseY = e.clientY;
@@ -97,9 +78,8 @@
       mouseY = -1000;
     });
     
-    // Touch support - always track touch position
+    // Touch support - simple and direct
     document.addEventListener("touchstart", function(e) {
-      isTouching = true;
       mouseX = e.touches[0].clientX;
       mouseY = e.touches[0].clientY;
     }, { passive: true });
@@ -110,14 +90,13 @@
     }, { passive: true });
     
     document.addEventListener("touchend", function() {
-      isTouching = false;
       mouseX = -1000;
       mouseY = -1000;
     });
   }
   
   function animate() {
-    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     
     updateParticles();
     drawLines();
@@ -130,7 +109,7 @@
     for (var i = 0; i < particles.length; i++) {
       var p = particles[i];
       
-      // Mouse/touch repulsion - always active
+      // Mouse/touch repulsion
       var dx = p.x - mouseX;
       var dy = p.y - mouseY;
       var dist = Math.sqrt(dx * dx + dy * dy);
@@ -142,24 +121,19 @@
         p.vy += Math.sin(angle) * force * config.mouseForce;
       }
       
-      // Apply velocity (reduced during scroll for stability)
-      var scrollFactor = scrollVelocity > 2 ? 0.3 : 1;
-      p.x += p.vx * scrollFactor;
-      p.y += p.vy * scrollFactor;
+      // Apply velocity
+      p.x += p.vx;
+      p.y += p.vy;
       
       // Friction
       p.vx *= 0.94;
       p.vy *= 0.94;
       
-      // Return to origin slowly
-      p.vx += (p.originX - p.x) * 0.0003;
-      p.vy += (p.originY - p.y) * 0.0003;
-      
       // Bounds - wrap around
-      if (p.x < -10) p.x = window.innerWidth + 10;
-      if (p.x > window.innerWidth + 10) p.x = -10;
-      if (p.y < -10) p.y = window.innerHeight + 10;
-      if (p.y > window.innerHeight + 10) p.y = -10;
+      if (p.x < 0) p.x = canvas.width;
+      if (p.x > canvas.width) p.x = 0;
+      if (p.y < 0) p.y = canvas.height;
+      if (p.y > canvas.height) p.y = 0;
     }
   }
   
