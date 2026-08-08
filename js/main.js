@@ -58,7 +58,7 @@ function injectShell() {
 
     var header =
     '<header class="site-header"><div class="container header-inner">' +
-    '<a href="index.html" class="logo"><span class="logo-name">Los Cholos<span class="dot">.</span></span><span class="logo-tag">BLACKWORK // BH</span></a>' +
+    '<a href="index.html" class="logo"><img src="img/logo-russ.png" alt="Russ Ink" style="height:40px;width:auto" /></a>' +
     '<nav class="nav-desktop">' + navLinks + "</nav>" +
     '<div class="header-actions">' +
     '<a class="icon-link" href="' + SITE.instagram + '" target="_blank" rel="noopener" aria-label="Instagram">' + ICONS.instagram + "</a>" +
