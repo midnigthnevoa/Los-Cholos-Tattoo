@@ -650,13 +650,29 @@ section { position: relative; }
 .slider-count b { color: var(--copper); font-weight: 600; }
 .slider-nav { display: flex; gap: 0.5rem; }
 .slider-btn {
+  position: relative;
   width: 44px; height: 44px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   display: flex; align-items: center; justify-content: center;
-  color: var(--stone-300);
-  transition: all 0.3s;
+  color: #a3a3a3;
+  transition: color 0.3s ease;
+  overflow: hidden;
+  isolation: isolate;
+  background: transparent;
 }
-.slider-btn:hover { border-color: var(--copper); color: var(--copper); }
+.slider-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: #FFD700;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.slider-btn:hover { color: #0a0a0a; border-color: #FFD700; }
+.slider-btn:hover::before { transform: scaleX(1); transform-origin: left; }
+.slider-btn:active { background: #E5C100; }
 .slider-btn:disabled { opacity: 0.25; pointer-events: none; }
 .slider-btn svg { width: 15px; height: 15px; }
 
@@ -1044,12 +1060,26 @@ section { position: relative; }
 
 /* ---------- BTN GHOST ---------- */
 .btn-ghost {
+  position: relative;
   background: transparent;
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  isolation: isolate;
 }
-.btn-ghost::before { background: rgba(255, 255, 255, 0.1); }
-.btn-ghost:hover { color: #ffffff; }
+.btn-ghost::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: #FFD700;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-ghost:hover { color: #0a0a0a; border-color: #FFD700; }
+.btn-ghost:hover::before { transform: scaleX(1); transform-origin: left; }
+.btn-ghost:active { background: #E5C100; }
 
 /* ---------- ABOUT SPLIT ---------- */
 .about-split-grid {
