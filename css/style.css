@@ -93,7 +93,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   filter: blur(120px);
   pointer-events: none;
   opacity: 0.12;
-  background: var(--copper);
+  background: var(--ink);
 }
 
 /* ---------- layout ---------- */
@@ -138,7 +138,7 @@ section { position: relative; }
   text-transform: uppercase;
   color: var(--cream);
 }
-.logo-name .dot { color: var(--copper); }
+.logo-name .dot { color: var(--ink); }
 .logo-tag {
   font-family: var(--font-mono);
   font-size: 0.5rem;
@@ -160,19 +160,19 @@ section { position: relative; }
   transition: color 0.3s;
 }
 .nav-link:hover { color: var(--white); }
-.nav-link.active { color: var(--copper); }
+.nav-link.active { color: var(--ink); }
 .nav-link.active::after {
   content: "";
   position: absolute;
   left: 0; right: 0; bottom: 0;
   height: 2px;
-  background: var(--copper);
+  background: var(--ink);
   border-radius: 1px;
 }
 
 .header-actions { display: flex; align-items: center; gap: 1rem; }
 .header-actions .icon-link { color: var(--stone-300); transition: color 0.3s; display: none; }
-.header-actions .icon-link:hover { color: var(--copper); }
+.header-actions .icon-link:hover { color: var(--ink); }
 
 /* ---------- BUTTONS ---------- */
 .btn {
@@ -276,7 +276,7 @@ section { position: relative; }
   font-family: var(--font-mono);
   font-size: 0.55rem;
   letter-spacing: 0.2em;
-  color: var(--copper);
+  color: var(--ink);
 }
 .drawer-nav a:hover, .drawer-nav a.active { color: var(--white); transform: translateX(10px); }
 .drawer-social {
@@ -297,7 +297,7 @@ section { position: relative; }
   letter-spacing: 0.15em;
   color: var(--stone-300);
 }
-.drawer-social a:hover { color: var(--copper); }
+.drawer-social a:hover { color: var(--ink); }
 
 /* ---------- BADGES ---------- */
 .badge {
@@ -310,7 +310,7 @@ section { position: relative; }
   font-size: 0.55rem;
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: var(--copper);
+  color: var(--ink);
 }
 .badge .dot {
   width: 6px; height: 6px;
@@ -327,16 +327,16 @@ section { position: relative; }
   font-size: 0.58rem;
   letter-spacing: 0.5em;
   text-transform: uppercase;
-  color: var(--copper);
+  color: var(--ink);
   display: flex;
   align-items: center;
   gap: 0.9rem;
 }
-.eyebrow::before { content: ""; width: 32px; height: 1px; background: var(--copper); }
+.eyebrow::before { content: ""; width: 32px; height: 1px; background: var(--ink); }
 
 /* ---------- HEADINGS ---------- */
 .grad {
-  background: linear-gradient(135deg, var(--copper-light) 0%, var(--copper) 50%, var(--copper-dark) 100%);
+  background: linear-gradient(135deg, var(--ink-light) 0%, var(--ink) 50%, var(--ink-dark) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -500,7 +500,7 @@ section { position: relative; }
   font-size: 1.1rem;
   letter-spacing: 0.4em;
   text-transform: uppercase;
-  color: var(--copper);
+  color: var(--ink);
   white-space: nowrap;
 }
 .marquee-item em { font-style: normal; color: var(--cream); }
@@ -534,7 +534,7 @@ section { position: relative; }
   content: "";
   position: absolute;
   width: 0; height: 0;
-  border: 2px solid var(--copper);
+  border: 2px solid var(--ink);
   opacity: 0;
   transition: all 0.5s var(--ease);
   z-index: 3;
@@ -576,7 +576,7 @@ section { position: relative; }
   font-family: var(--font-mono);
   font-size: 0.65rem;
   letter-spacing: 0.2em;
-  color: var(--copper);
+  color: var(--ink);
   padding-top: 0.3rem;
 }
 .num-item h3 {
@@ -596,11 +596,11 @@ section { position: relative; }
   letter-spacing: 0.25em;
   text-transform: uppercase;
   border: 1px solid var(--line-strong);
-  color: var(--copper);
+  color: var(--ink);
   padding: 0.35rem 0.6rem;
   transition: all 0.3s;
 }
-.tag:hover { background: var(--copper); color: #000; }
+.tag:hover { background: var(--ink); color: #000; }
 
 /* ---------- GALLERY ---------- */
 .gallery-grid {
@@ -646,7 +646,7 @@ section { position: relative; }
   color: var(--stone-500);
   text-transform: uppercase;
 }
-.slider-count b { color: var(--copper); font-weight: 600; }
+.slider-count b { color: var(--ink); font-weight: 600; }
 .slider-nav { display: flex; gap: 0.5rem; }
 .slider-btn {
   position: relative;
@@ -702,7 +702,7 @@ section { position: relative; }
   font-size: 0.55rem;
   letter-spacing: 0.4em;
   text-transform: uppercase;
-  color: var(--copper);
+  color: var(--ink);
   margin: 1rem 0 0.4rem;
 }
 .project-card h3 {
@@ -788,7 +788,7 @@ section { position: relative; }
   font-family: var(--font-mono);
   font-size: 0.55rem;
   letter-spacing: 0.35em;
-  color: var(--copper);
+  color: var(--ink);
 }
 .care-card h3 {
   font-family: var(--font-display);
@@ -907,8 +907,8 @@ section { position: relative; }
   border-color: #ffffff;
   color: #ffffff;
 }
-.skill-tag small { font-family: var(--font-mono); color: var(--copper); font-size: 0.5rem; }
-.skill-tag:hover { border-color: var(--copper); color: var(--white); transform: translateY(-2px); }
+.skill-tag small { font-family: var(--font-mono); color: var(--ink); font-size: 0.5rem; }
+.skill-tag:hover { border-color: var(--ink); color: var(--white); transform: translateY(-2px); }
 
 /* ---------- PAGE HEADER ---------- */
 .page-hero { padding: 140px 0 3.5rem; overflow: hidden; }
@@ -923,7 +923,7 @@ section { position: relative; }
   font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase;
   color: var(--stone-400); margin-bottom: 2rem; transition: all 0.3s;
 }
-.back-link:hover { color: var(--copper); gap: 0.8rem; }
+.back-link:hover { color: var(--ink); gap: 0.8rem; }
 
 .mono-note {
   font-family: var(--font-mono);
@@ -1203,7 +1203,7 @@ section { position: relative; }
 .cta-final-bg {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, var(--copper) 0%, var(--copper-dark) 100%);
+  background: linear-gradient(135deg, var(--ink) 0%, var(--ink-dark) 100%);
   opacity: 0.08;
 }
 .cta-final-title {
@@ -1289,7 +1289,7 @@ section { position: relative; }
   font-size: 0.55rem;
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: var(--copper);
+  color: var(--ink);
   margin-bottom: 2rem;
   backdrop-filter: blur(10px);
   background: rgba(10, 10, 10, 0.3);
@@ -1309,14 +1309,14 @@ section { position: relative; }
 }
 .hero-dramatic-accent {
   color: transparent;
-  -webkit-text-stroke: 2px var(--copper);
+  -webkit-text-stroke: 2px var(--ink);
 }
 .hero-dramatic-sub {
   font-family: var(--font-mono);
   font-size: 0.65rem;
   letter-spacing: 0.55em;
   text-transform: uppercase;
-  color: var(--copper-light);
+  color: var(--ink-light);
   margin-top: 2rem;
 }
 .hero-dramatic-right {
@@ -1355,7 +1355,7 @@ section { position: relative; }
 .hero-dramatic-scroll-line {
   width: 1px;
   height: 40px;
-  background: var(--copper);
+  background: var(--ink);
   animation: scrollPulse 2s ease-in-out infinite;
 }
 @keyframes scrollPulse {
@@ -1405,7 +1405,7 @@ section { position: relative; }
 .intro-stat-num {
   font-family: var(--font-display);
   font-size: 2.5rem;
-  color: var(--copper);
+  color: var(--ink);
   line-height: 1;
 }
 .intro-stat-label {
@@ -1472,7 +1472,7 @@ section { position: relative; }
   color: rgba(255, 215, 0, 0.6);
 }
 .process-step-icon {
-  color: var(--copper);
+  color: var(--ink);
   margin-bottom: 1.5rem;
   transition: color 0.4s;
 }
@@ -1518,7 +1518,7 @@ section { position: relative; }
   font-size: 0.5rem;
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: var(--copper);
+  color: var(--ink);
 }
 .location-detail-value {
   color: var(--cream);
@@ -1540,7 +1540,7 @@ section { position: relative; }
   position: fixed;
   width: 20px;
   height: 20px;
-  border: 1px solid var(--copper);
+  border: 1px solid var(--ink);
   border-radius: 50%;
   pointer-events: none;
   z-index: 99999;
@@ -1552,12 +1552,12 @@ section { position: relative; }
 .cursor.active { 
   transform: translate(-50%, -50%) scale(2.5); 
   background: rgba(255, 215, 0, 0.15);
-  border-color: var(--copper-light);
+  border-color: var(--ink-light);
 }
 .cursor.pointer { 
   transform: translate(-50%, -50%) scale(1.8); 
-  background: var(--copper);
-  border-color: var(--copper);
+  background: var(--ink);
+  border-color: var(--ink);
 }
 .cursor.pointer::after {
   content: "";
@@ -1660,7 +1660,7 @@ section { position: relative; }
   left: 0;
   width: 0;
   height: 1px;
-  background: var(--copper);
+  background: var(--ink);
   transition: width 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .line-draw:hover::after {
