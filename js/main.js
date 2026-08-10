@@ -407,6 +407,7 @@ function renderCatalog() {
 
 /* ---------- MAGNETIC BUTTONS ---------- */
 (function initMagnetic() {
+  if (window.innerWidth < 1024) return;
   var magnets = document.querySelectorAll(".magnetic");
   magnets.forEach(function(magnet) {
     var inner = magnet.querySelector(".magnetic-inner") || magnet;
@@ -424,8 +425,6 @@ function renderCatalog() {
     
     magnet.addEventListener("mousemove", function(e) { onMove(e.clientX, e.clientY); });
     magnet.addEventListener("mouseleave", onEnd);
-    magnet.addEventListener("touchmove", function(e) { onMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
-    magnet.addEventListener("touchend", onEnd);
   });
 })();
 
@@ -474,6 +473,7 @@ function renderCatalog() {
 
 /* ---------- TILT CARDS ---------- */
 (function initTilt() {
+  if (window.innerWidth < 1024) return;
   document.querySelectorAll(".tilt-card").forEach(function(card) {
     var inner = card.querySelector(".tilt-card-inner") || card;
     
@@ -490,8 +490,6 @@ function renderCatalog() {
     
     card.addEventListener("mousemove", function(e) { onMove(e.clientX, e.clientY); });
     card.addEventListener("mouseleave", onEnd);
-    card.addEventListener("touchmove", function(e) { onMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
-    card.addEventListener("touchend", onEnd);
   });
 })();
 
