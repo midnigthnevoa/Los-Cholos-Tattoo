@@ -1666,6 +1666,39 @@ html {
   z-index: 1 !important;
 }
 
+/* ---------- LOGO WATERMARK ---------- */
+.logo-watermark {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.04;
+  z-index: 0;
+}
+.hero .logo-watermark {
+  width: 500px;
+  height: auto;
+  bottom: -80px;
+  right: -60px;
+  transform: rotate(-12deg);
+}
+.cta-final .logo-watermark {
+  width: 300px;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.06;
+}
+@media (max-width: 768px) {
+  .hero .logo-watermark {
+    width: 280px;
+    bottom: -40px;
+    right: -30px;
+  }
+  .cta-final .logo-watermark {
+    width: 180px;
+  }
+}
+
 /* ---------- SEPARATOR LINE ---------- */
 .separator {
   width: 60px;
