@@ -1,6 +1,6 @@
 /* =========================================================
    PARTICLES — Los Cholos Tattoo
-   Partículas copper/dourado com movimento orgânico
+   Partículas azul/vermelho com degradê e dourado
    ========================================================= */
 
 (function() {
@@ -11,8 +11,9 @@
     minSize: 0.5,
     maxSize: 1.8,
     speed: 0.08,
-    color: { r: 200, g: 117, b: 51 },
-    colorAlt: { r: 232, g: 168, b: 124 },
+    color: { r: 65, g: 105, b: 225 },
+    colorAlt: { r: 220, g: 20, b: 60 },
+    colorGold: { r: 255, g: 215, b: 0 },
     mouseRadius: 150,
     mouseForce: 0.5,
     lineDistance: 140,
@@ -51,6 +52,16 @@
       var angle = Math.random() * Math.PI * 2;
       var spd = expBase + Math.random() * expRange;
       
+      var colorRand = Math.random();
+      var particleColor;
+      if (colorRand < 0.4) {
+        particleColor = config.color;
+      } else if (colorRand < 0.8) {
+        particleColor = config.colorAlt;
+      } else {
+        particleColor = config.colorGold;
+      }
+      
       particles.push({
         x: cx + (Math.random() - 0.5) * 50,
         y: cy + (Math.random() - 0.5) * 50,
@@ -59,7 +70,7 @@
         size: config.minSize + Math.random() * (config.maxSize - config.minSize),
         opacity: 0,
         targetOpacity: 0.15 + Math.random() * 0.35,
-        color: Math.random() > 0.5 ? config.color : config.colorAlt,
+        color: particleColor,
         angle: angle,
         speed: 0.08 + Math.random() * config.speed,
         wanderAngle: Math.random() * Math.PI * 2,
@@ -191,7 +202,7 @@
         
         if (dist < config.lineDistance) {
           var opacity = (1 - dist / config.lineDistance) * config.lineOpacity;
-          ctx.strokeStyle = "rgba(" + config.color.r + "," + config.color.g + "," + config.color.b + "," + opacity + ")";
+          ctx.strokeStyle = "rgba(" + config.colorGold.r + "," + config.colorGold.g + "," + config.colorGold.b + "," + opacity + ")";
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
