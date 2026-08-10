@@ -166,6 +166,8 @@ function initSliders() {
     if (!viewport) return;
 
     var slides = function () { return viewport.children; };
+    var autoplayInterval = null;
+    var autoplayDelay = 4000;
 
     var gap = function () {
       var g = window.getComputedStyle(viewport).gap;
@@ -189,13 +191,40 @@ function initSliders() {
       viewport.scrollTo({ left: i * (s[0].offsetWidth + gap()), behavior: "smooth" });
     };
 
+    var startAutoplay = function () {
+      if (autoplayInterval) return;
+      autoplayInterval = setInterval(function () {
+        var s = slides();
+        var i = Math.round(viewport.scrollLeft / (s[0].offsetWidth + gap()));
+        if (i >= s.length - 1) {
+          viewport.scrollTo({ left: 0, behavior: "smooth" });
+        } else {
+          go(1);
+        }
+      }, autoplayDelay);
+    };
+
+    var stopAutoplay = function () {
+      if (autoplayInterval) {
+        clearInterval(autoplayInterval);
+        autoplayInterval = null;
+      }
+    };
+
     viewport.addEventListener("scroll", function () {
       window.requestAnimationFrame(update);
+    }, { passive: true });
+    viewport.addEventListener("mouseenter", stopAutoplay);
+    viewport.addEventListener("mouseleave", startAutoplay);
+    viewport.addEventListener("touchstart", stopAutoplay, { passive: true });
+    viewport.addEventListener("touchend", function () {
+      setTimeout(startAutoplay, 2000);
     }, { passive: true });
     if (prev) prev.addEventListener("click", function () { go(-1); });
     if (next) next.addEventListener("click", function () { go(1); });
     window.addEventListener("resize", update);
     update();
+    startAutoplay();
   });
 }
 
